@@ -1620,16 +1620,7 @@ footer span { color:var(--gold);font-family:'Cinzel',serif;font-size:.73rem;lett
   <span>MAE101 &bull; Lê Văn Bi &bull; Codex Atlanticus Mathematicus &bull; FPT University</span>
 </footer>
 
-<script>
-function show(id){
-  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  const map={a1:0,a2:1,a3:2,a4:3,c1:4,c2:5,c3:6,c4:7,c5:8};
-  document.querySelectorAll('.nb')[map[id]].classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-</script>
+
 
     </div><!-- /panel-mae -->
   </div><!-- /app-content -->
@@ -2271,7 +2262,7 @@ const CSI_EXAMS = [
 // ============================================================
 // STATE
 // ============================================================
-let let csi_currentExam = 0;
+let csi_currentExam = 0;
 // === CEA DATA ===
 
 // ============================================================
@@ -2515,7 +2506,7 @@ const CEA_EXAMS = [
 // ============================================================
 // STATE
 // ============================================================
-let let cea_currentExam = 0;
+let cea_currentExam = 0;
 // === INIT ENGINES ===
 let csiInit=false,ceaInit=false;
 const csiE=makeEngine({
