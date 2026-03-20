@@ -4,7 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FPT Study Portal — Le Van Bi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* System font fallbacks - ensures good appearance even without Google Fonts */
+:root {
+  --font-display: 'Syne', 'SF Pro Display', -apple-system, 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'SF Pro Text', -apple-system, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+}
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 <style>
 /* ===== PORTAL GLOBAL ===== */
@@ -19,15 +29,15 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--void);color:var(--txt);min-height:100vh;overflow-x:hidden;}
+body{font-family:var(--font-body);background:var(--void);color:var(--txt);min-height:100vh;overflow-x:hidden;}
 
 /* ===== LANDING ===== */
 #portal-landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;position:relative;overflow:hidden;}
 .lg{position:absolute;inset:0;background-image:linear-gradient(rgba(30,45,61,.25) 1px,transparent 1px),linear-gradient(90deg,rgba(30,45,61,.25) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;}
 .lg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,transparent 40%,var(--void) 100%);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.pb{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);background:rgba(244,196,48,.08);border:1px solid rgba(244,196,48,.25);padding:6px 18px;border-radius:99px;margin-bottom:28px;position:relative;animation:fadeUp .5s ease both;}
-.pt{font-family:'Syne',sans-serif;font-size:clamp(2.6rem,8vw,5.5rem);font-weight:800;line-height:1;text-align:center;position:relative;margin-bottom:14px;letter-spacing:-.03em;animation:fadeUp .5s .08s ease both;}
+.pb{font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);background:rgba(244,196,48,.08);border:1px solid rgba(244,196,48,.25);padding:6px 18px;border-radius:99px;margin-bottom:28px;position:relative;animation:fadeUp .5s ease both;}
+.pt{font-family:var(--font-display);font-size:clamp(2.6rem,8vw,5.5rem);font-weight:800;line-height:1;text-align:center;position:relative;margin-bottom:14px;letter-spacing:-.03em;animation:fadeUp .5s .08s ease both;}
 .pt .l1{color:var(--txt);display:block;}
 .pt .l2{display:block;background:linear-gradient(135deg,var(--csi),var(--mae));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .ps{font-size:1rem;color:var(--muted);font-weight:300;text-align:center;margin-bottom:56px;position:relative;max-width:460px;animation:fadeUp .5s .15s ease both;}
@@ -45,15 +55,15 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--void);color:var
 .sc .subj.csi:hover{border-color:var(--csi);box-shadow:0 14px 44px var(--csi-glow),0 0 0 1px var(--csi);}
 .sc .subj.cea:hover{border-color:var(--cea);box-shadow:0 14px 44px var(--cea-glow),0 0 0 1px var(--cea);}
 .sc .subj.mae:hover{border-color:var(--mae);box-shadow:0 14px 44px var(--mae-glow),0 0 0 1px var(--mae);}
-.si{font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;line-height:1;margin-bottom:14px;display:block;}
+.si{font-family:var(--font-mono);font-size:2rem;font-weight:700;line-height:1;margin-bottom:14px;display:block;}
 .subj.csi .si{color:var(--csi);}.subj.cea .si{color:var(--cea);}.subj.mae .si{color:var(--mae);}
-.sc2{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px;}
+.sc2{font-family:var(--font-mono);font-size:.68rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px;}
 .subj.csi .sc2{color:var(--csi);}.subj.cea .sc2{color:var(--cea);}.subj.mae .sc2{color:var(--mae);}
-.sn{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--txt);margin-bottom:9px;line-height:1.3;}
+.sn{font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--txt);margin-bottom:9px;line-height:1.3;}
 .sd{font-size:.85rem;color:var(--muted);line-height:1.55;margin-bottom:18px;}
 .sts{display:flex;gap:8px;flex-wrap:wrap;}
-.stp{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:600;padding:3px 9px;border-radius:99px;border:1px solid var(--border2);color:var(--muted);}
-.cta{display:flex;align-items:center;gap:6px;margin-top:20px;font-family:'Syne',sans-serif;font-size:.84rem;font-weight:600;transition:gap .15s;}
+.stp{font-family:var(--font-mono);font-size:.68rem;font-weight:600;padding:3px 9px;border-radius:99px;border:1px solid var(--border2);color:var(--muted);}
+.cta{display:flex;align-items:center;gap:6px;margin-top:20px;font-family:var(--font-display);font-size:.84rem;font-weight:600;transition:gap .15s;}
 .subj.csi .cta{color:var(--csi);}.subj.cea .cta{color:var(--cea);}.subj.mae .cta{color:var(--mae);}
 .subj:hover .cta{gap:11px;}
 
@@ -61,12 +71,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--void);color:var
 #portal-app{display:none;min-height:100vh;flex-direction:column;}
 #portal-app.on{display:flex;}
 .topbar{background:var(--deep);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;height:52px;position:sticky;top:0;z-index:200;flex-shrink:0;}
-.thome{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--gold);background:none;border:none;cursor:pointer;padding:6px 12px 6px 0;display:flex;align-items:center;gap:6px;transition:opacity .15s;flex-shrink:0;}
+.thome{font-family:var(--font-display);font-size:.88rem;font-weight:700;color:var(--gold);background:none;border:none;cursor:pointer;padding:6px 12px 6px 0;display:flex;align-items:center;gap:6px;transition:opacity .15s;flex-shrink:0;}
 .thome:hover{opacity:.7;}
 .tdiv{width:1px;height:20px;background:var(--border);margin:0 8px;flex-shrink:0;}
 .ttabs{display:flex;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none;}
 .ttabs::-webkit-scrollbar{display:none;}
-.ttab{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;padding:6px 16px;background:none;border:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;height:52px;display:flex;align-items:center;gap:7px;}
+.ttab{font-family:var(--font-display);font-size:.82rem;font-weight:600;padding:6px 16px;background:none;border:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;height:52px;display:flex;align-items:center;gap:7px;}
 .ttab:hover{color:var(--txt);}
 .ttab.active.csi{color:var(--csi);border-bottom-color:var(--csi);}
 .ttab.active.cea{color:var(--cea);border-bottom-color:var(--cea);}
@@ -80,10 +90,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--void);color:var
 /* ===== QUIZ (shared CSI + CEA) ===== */
 .qwrap{max-width:880px;margin:0 auto;padding:26px 18px 60px;display:flex;flex-direction:column;align-items:center;}
 .qhdr{width:100%;text-align:center;padding:14px 0 18px;}
-.qhdr h2{font-family:'Syne',sans-serif;font-size:1.45rem;font-weight:700;letter-spacing:-.02em;}
+.qhdr h2{font-family:var(--font-display);font-size:1.45rem;font-weight:700;letter-spacing:-.02em;}
 .qhdr p{font-size:.85rem;color:var(--muted);margin-top:4px;}
 .exam-selector{width:100%;display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:13px;}
-.exam-btn{background:var(--surface);border:1px solid var(--border2);color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:500;padding:5px 13px;cursor:pointer;border-radius:8px;transition:all .15s;}
+.exam-btn{background:var(--surface);border:1px solid var(--border2);color:var(--muted);font-family:var(--font-body);font-size:.82rem;font-weight:500;padding:5px 13px;cursor:pointer;border-radius:8px;transition:all .15s;}
 .exam-btn:hover{color:var(--txt);border-color:var(--dim);}
 .csi-q .exam-btn.active{background:var(--csi-dk);color:var(--csi);border-color:var(--csi);}
 .cea-q .exam-btn.active{background:var(--cea-dk);color:var(--cea);border-color:var(--cea);}
@@ -97,11 +107,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--void);color:var
 .pf{height:100%;border-radius:99px;transition:width .4s ease;}
 .csi-q .pf{background:linear-gradient(90deg,var(--csi),#0080ff);}
 .cea-q .pf{background:linear-gradient(90deg,var(--cea),#ff8c00);}
-.pt2{color:var(--muted);font-size:.78rem;min-width:62px;text-align:right;font-family:'JetBrains Mono',monospace;font-weight:600;}
+.pt2{color:var(--muted);font-size:.78rem;min-width:62px;text-align:right;font-family:var(--font-mono);font-weight:600;}
 .qcard{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px 30px 22px;box-shadow:0 4px 28px rgba(0,0,0,.35);}
 @media(max-width:500px){.qcard{padding:18px 16px 16px;}}
 .qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;flex-wrap:wrap;gap:7px;}
-.qnum{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;padding:3px 11px;border-radius:99px;border:1px solid;}
+.qnum{font-family:var(--font-mono);font-size:.72rem;font-weight:700;padding:3px 11px;border-radius:99px;border:1px solid;}
 .csi-q .qnum{color:var(--csi);background:var(--csi-dk);border-color:rgba(0,200,255,.3);}
 .cea-q .qnum{color:var(--cea);background:var(--cea-dk);border-color:rgba(255,107,53,.3);}
 .qsrc{font-size:.73rem;color:var(--muted);background:var(--raised);border:1px solid var(--border);padding:3px 9px;border-radius:99px;}
@@ -117,7 +127,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--void);color:var
 .option.wrong{border-color:#f87171!important;background:rgba(248,113,113,.08)!important;}
 .option.missed{border-color:#4ade80!important;background:rgba(74,222,128,.04)!important;border-style:dashed!important;}
 .option.disabled{cursor:default;}
-.olbl{font-family:'JetBrains Mono',monospace;font-size:.74rem;font-weight:700;color:var(--muted);background:var(--border);min-width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.olbl{font-family:var(--font-mono);font-size:.74rem;font-weight:700;color:var(--muted);background:var(--border);min-width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
 .csi-q .option.selected .olbl{background:var(--csi);color:var(--void);}
 .cea-q .option.selected .olbl{background:var(--cea);color:var(--void);}
 .option.correct .olbl{background:#16a34a;color:#fff;}
@@ -129,7 +139,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--void);color:var
 .expl{display:none;margin-top:13px;padding:11px 14px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);border-radius:10px;font-size:.87rem;color:#d4a035;line-height:1.65;}
 .expl.show{display:block;}.expl strong{color:#f4c430;}
 .brow{display:flex;gap:9px;margin-top:20px;justify-content:space-between;align-items:center;}
-.btn{font-family:'Plus Jakarta Sans',sans-serif;font-size:.86rem;font-weight:600;padding:9px 20px;border-radius:9px;cursor:pointer;transition:all .15s;border:1px solid;}
+.btn{font-family:var(--font-body);font-size:.86rem;font-weight:600;padding:9px 20px;border-radius:9px;cursor:pointer;transition:all .15s;border:1px solid;}
 .btn-chk{background:var(--csi);color:var(--void);border-color:var(--csi);}
 .cea-q .btn-chk{background:var(--cea);border-color:var(--cea);}
 .btn-chk:hover{opacity:.85;}.btn-chk:disabled{opacity:.3;cursor:default;}
@@ -140,16 +150,16 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--void);color:var
 .btn-skp:hover{color:var(--txt);border-color:var(--dim);}
 .spanel{display:none;width:100%;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:44px 34px;text-align:center;box-shadow:0 4px 28px rgba(0,0,0,.35);}
 .spanel.show{display:block;}
-.stitle{font-family:'Syne',sans-serif;font-size:1.28rem;font-weight:700;margin-bottom:6px;}
-.snum{font-family:'JetBrains Mono',monospace;font-size:5rem;font-weight:700;line-height:1;margin:16px 0;}
+.stitle{font-family:var(--font-display);font-size:1.28rem;font-weight:700;margin-bottom:6px;}
+.snum{font-family:var(--font-mono);font-size:5rem;font-weight:700;line-height:1;margin:16px 0;}
 .csi-q .snum{color:var(--csi);}.cea-q .snum{color:var(--cea);}
 .snum span{font-size:2.1rem;color:var(--muted);font-weight:400;}
 .sstats{display:flex;justify-content:center;gap:11px;margin:16px 0 26px;flex-wrap:wrap;}
 .sbox{padding:11px 17px;background:var(--raised);border-radius:10px;border:1px solid var(--border);min-width:78px;}
 .slbl{font-size:.72rem;color:var(--muted);display:block;margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;}
-.sval{font-size:1.65rem;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--txt);}
+.sval{font-size:1.65rem;font-family:var(--font-mono);font-weight:700;color:var(--txt);}
 .sval.g{color:#4ade80;}.sval.r{color:#f87171;}
-.btn-rst{background:var(--raised);color:var(--txt);border:1px solid var(--border2);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:600;padding:10px 26px;border-radius:9px;cursor:pointer;transition:all .15s;}
+.btn-rst{background:var(--raised);color:var(--txt);border:1px solid var(--border2);font-family:var(--font-body);font-size:.88rem;font-weight:600;padding:10px 26px;border-radius:9px;cursor:pointer;transition:all .15s;}
 .btn-rst:hover{border-color:var(--dim);}
 
 /* ===== MAE PANEL ===== */
@@ -215,7 +225,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--void);color:var
   color:#8a7050;
   font-size:.88rem;
   margin-top:6px;
-  font-family:'JetBrains Mono',monospace;
+  font-family:var(--font-mono);
   position:relative;
 }
 #panel-mae .orn { color:var(--gold);font-size:1.6rem;display:block;margin:12px 0;opacity:.55;position:relative; }
@@ -308,7 +318,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--void);color:var
 /* TAG */
 #panel-mae .tag {
   display:inline-block;
-  font-family:'JetBrains Mono',monospace;
+  font-family:var(--font-mono);
   font-size:.66rem;
   font-weight:600;
   letter-spacing:.1em;
@@ -2379,12 +2389,12 @@ body { font-size: 15px; letter-spacing: -.01em; }
           <div class="pts-card csi-pts">
             <span class="pts-label">CSI106</span>
             <div class="pts-value" id="shop-csi-status" style="font-size:1rem">Chua mo</div>
-            <div class="pts-sub" id="shop-csi-key" style="font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:4px"></div>
+            <div class="pts-sub" id="shop-csi-key" style="font-family:var(--font-mono);font-size:.7rem;margin-top:4px"></div>
           </div>
           <div class="pts-card cea-pts">
             <span class="pts-label">CEA201</span>
             <div class="pts-value" id="shop-cea-status" style="font-size:1rem">Chua mo</div>
-            <div class="pts-sub" id="shop-cea-key" style="font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:4px"></div>
+            <div class="pts-sub" id="shop-cea-key" style="font-family:var(--font-mono);font-size:.7rem;margin-top:4px"></div>
           </div>
           <div class="pts-card mae-pts">
             <span class="pts-label">MAE101</span>
@@ -2409,7 +2419,7 @@ body { font-size: 15px; letter-spacing: -.01em; }
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px 24px;margin-bottom:20px">
           <p style="font-size:.88rem;color:var(--muted);margin-bottom:18px;line-height:1.65">
             Lien he trung gian de mua key. Sau khi chuyen khoan thanh cong, ban se nhan duoc key co dang
-            <span style="font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:.85rem">XXXX-XXXX-XXXX</span>
+            <span style="font-family:var(--font-mono);color:var(--gold);font-size:.85rem">XXXX-XXXX-XXXX</span>
             de nhap vao o ben duoi.
           </p>
 
@@ -2421,7 +2431,7 @@ body { font-size: 15px; letter-spacing: -.01em; }
               maxlength="14"
               autocomplete="off"
               spellcheck="false"
-              style="width:100%;background:var(--raised);border:1.5px solid var(--border2);border-radius:10px;padding:14px 18px;font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:700;color:var(--txt);letter-spacing:.12em;text-transform:uppercase;text-align:center;outline:none;transition:border-color .15s;box-sizing:border-box"
+              style="width:100%;background:var(--raised);border:1.5px solid var(--border2);border-radius:10px;padding:14px 18px;font-family:var(--font-mono);font-size:1.05rem;font-weight:700;color:var(--txt);letter-spacing:.12em;text-transform:uppercase;text-align:center;outline:none;transition:border-color .15s;box-sizing:border-box"
               oninput="shopFormatKey(this)"
               onkeydown="if(event.key==='Enter')shopSubmitKey()"
               onfocus="this.style.borderColor='var(--gold)'"
@@ -2432,7 +2442,7 @@ body { font-size: 15px; letter-spacing: -.01em; }
           <div id="shopKeyError" style="display:none;font-size:.8rem;color:#f87171;margin-bottom:10px;text-align:center"></div>
           <div id="shopKeySuccess" style="display:none;font-size:.85rem;color:#4ade80;margin-bottom:10px;text-align:center;font-weight:600"></div>
 
-          <button onclick="shopSubmitKey()" style="width:100%;background:var(--gold);color:var(--void);border:none;border-radius:10px;padding:13px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          <button onclick="shopSubmitKey()" style="width:100%;background:var(--gold);color:var(--void);border:none;border-radius:10px;padding:13px;font-family:var(--font-display);font-size:1rem;font-weight:700;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
             Kich Hoat Key
           </button>
         </div>
@@ -3513,21 +3523,28 @@ document.addEventListener('click', function(e) {
 // Valid keys — format: SUBJ-TIER-RANDOM (uppercase)
 // In production: generate these server-side after payment
 // For demo: predefined keys work
-const VALID_KEYS = {
-  // CSI keys
-  'CSI1-2024-ABCD': 'csi',
-  'CSI1-2024-EFGH': 'csi',
-  'CSI1-FA25-OPEN': 'csi',
-  'CSI2-2024-XYZW': 'csi',
-  'CSI2-FA25-PLUS': 'csi',
-  'CSIV-2024-VVIP': 'csi',
-  // CEA keys
-  'CEA1-2024-ABCD': 'cea',
-  'CEA1-FA25-OPEN': 'cea',
-  'CEA2-2024-XYZW': 'cea',
-  'CEA2-FA25-PLUS': 'cea',
-  'CEAV-2024-VVIP': 'cea',
+// KEY VERIFICATION - uses SHA-256 hashes, not plaintext keys
+// Cannot be reversed to recover original keys
+const _KH = {
+  csi: ['054c13bb4bf5e1f779ee68094076b9d5093c11aa9c0a7c3cbd8dfd074b7ce5f1', '21cbbe8b2974e3c51f602b1f5c83ba43ea31e2f92987a402e933536fc39a2856', '0326ffa8e267d19a5ab60864cc559237e53b61c4d6266ce41347944dc370e773', '986e50fc60ca362246718ac724e31996dcc7c03611f97a63b1f4e6728ac4831d', 'd66638a9df4146103dd126a2ef39ddcf0a4d270506df6264349627501c670c60', 'c33de04458d3a5e7c24809492964dea4987ca8bc729c7f0e7dfcd51d81472915'],
+  cea: ['e493804fbeee0f82048287385d2e228f879a90738185ad3027d76ddf0bf2826b', '9f96b51da27135a4fc7b9399b78f6df7cf849748df6ec5ddf2b992aad0cb6e69', '9d5bb603d2c0821c8c2dd081efdd0e8759027da1f632caee28a5671267d27a7f', 'de3bd64901508599a772d789677291d0187b81fd1eb44d458b336e547d64f75d', '13259c14955cccaed5e5d29affbc53d31199a51e9082c63b8e9c1492b6c18a6d']
 };
+
+// Runtime key map (populated as keys are validated)
+const VALID_KEYS = {};
+
+// Hash function (SHA-256 via SubtleCrypto)
+async function _hashKey(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function verifyKey(keyVal) {
+  const h = await _hashKey(keyVal.toUpperCase().trim());
+  if(_KH.csi.includes(h)) return 'csi';
+  if(_KH.cea.includes(h)) return 'cea';
+  return null;
+}
 
 const KEY_STORAGE = 'fpt_unlocked_keys';
 
@@ -3601,33 +3618,34 @@ function submitKey() {
   const keyVal = input.value.trim().toUpperCase();
   if(!keyVal) return;
 
-  const keySubject = VALID_KEYS[keyVal];
-  const expectedSubject = _keyGateTarget;
+  const btn = document.getElementById('keyUnlockBtn');
+  if(btn) { btn.disabled=true; btn.textContent='Dang kiem tra...'; }
 
-  if(keySubject && keySubject === expectedSubject) {
-    // SUCCESS
-    input.classList.remove('error');
-    input.classList.add('success');
-    saveUnlockedSubject(expectedSubject, keyVal);
-    setTimeout(() => {
-      closeKeyGate();
-      applyUnlockUI(expectedSubject);
-      if(expectedSubject === 'csi') { csiInit=true; csiBuild(); csiStart(); }
-      if(expectedSubject === 'cea') { ceaInit=true; ceaBuild(); ceaStart(); }
-    }, 600);
-  } else {
-    // ERROR
-    input.classList.add('error');
-    if(err) {
-      const msg = keySubject && keySubject !== expectedSubject
-        ? 'Key nay danh cho ' + keySubject.toUpperCase() + ', khong phai ' + expectedSubject.toUpperCase() + '.'
-        : 'Key khong hop le. Vui long kiem tra lai.';
-      err.textContent = msg;
-      err.classList.add('show');
+  verifyKey(keyVal).then(keySubject => {
+    if(btn) { btn.disabled=false; btn.textContent='Mo Khoa'; }
+    if(keySubject && keySubject === _keyGateTarget) {
+      input.classList.remove('error');
+      input.classList.add('success');
+      saveUnlockedSubject(keySubject, keyVal);
+      setTimeout(() => {
+        closeKeyGate();
+        applyUnlockUI(keySubject);
+        if(keySubject === 'csi') { csiInit=true; csiBuild(); csiStart(); }
+        if(keySubject === 'cea') { ceaInit=true; ceaBuild(); ceaStart(); }
+      }, 600);
+    } else {
+      input.classList.add('error');
+      if(err) {
+        const msg = keySubject && keySubject !== _keyGateTarget
+          ? 'Key nay danh cho ' + keySubject.toUpperCase() + ', khong phai ' + _keyGateTarget.toUpperCase() + '.'
+          : 'Key khong hop le. Vui long kiem tra lai.';
+        err.textContent = msg;
+        err.classList.add('show');
+      }
+      input.value = '';
+      setTimeout(() => { input.classList.remove('error'); }, 600);
     }
-    input.value = '';
-    setTimeout(() => { input.classList.remove('error'); }, 600);
-  }
+  });
 }
 
 function applyUnlockUI(subject) {
@@ -3704,7 +3722,7 @@ function confirmPayment() {
     if(ptsSub) ptsSub.innerHTML =
       'Diem da duoc cong vao ' + titles[subject] + '!<br>' +
       '<br><span style="font-size:.78rem;color:var(--muted)">Key mo khoa cua ban:</span><br>' +
-      '<span style="font-family:JetBrains Mono,monospace;font-size:1.2rem;font-weight:700;color:var(--gold);letter-spacing:.12em;display:block;margin-top:6px;padding:10px;background:var(--raised);border-radius:8px;border:1px solid rgba(244,196,48,.3)">' +
+      '<span style="font-family:var(--font-mono);font-size:1.2rem;font-weight:700;color:var(--gold);letter-spacing:.12em;display:block;margin-top:6px;padding:10px;background:var(--raised);border-radius:8px;border:1px solid rgba(244,196,48,.3)">' +
       generatedKey + '</span>' +
       '<span style="font-size:.72rem;color:var(--muted);display:block;margin-top:6px">Luu lai key nay de su dung!</span>';
 
@@ -3746,37 +3764,33 @@ function shopSubmitKey() {
   const okEl = document.getElementById('shopKeySuccess');
   if(!input) return;
   const keyVal = input.value.trim().toUpperCase();
-  if(!keyVal || keyVal.length < 14) {
+  if(!keyVal || keyVal.replace(/-/g,'').length < 12) {
     errEl.textContent = 'Vui long nhap day du key (dinh dang XXXX-XXXX-XXXX)';
     errEl.style.display = 'block'; okEl.style.display='none'; return;
   }
-  const subject = VALID_KEYS[keyVal];
-  if(subject) {
-    if(isUnlocked(subject)) {
-      errEl.textContent = subject.toUpperCase() + ' da duoc mo khoa roi!';
-      errEl.style.display='block'; okEl.style.display='none'; return;
+  verifyKey(keyVal).then(subject => {
+    if(subject) {
+      if(isUnlocked(subject)) {
+        errEl.textContent = subject.toUpperCase() + ' da duoc mo khoa roi!';
+        errEl.style.display='block'; okEl.style.display='none'; return;
+      }
+      saveUnlockedSubject(subject, keyVal);
+      applyUnlockUI(subject);
+      input.value = '';
+      input.style.borderColor = '#4ade80';
+      errEl.style.display='none';
+      const labels = {csi:'CSI106',cea:'CEA201'};
+      okEl.textContent = '\u2713 Mo khoa ' + labels[subject] + ' thanh cong!';
+      okEl.style.display = 'block';
+      refreshShopStatus();
+      setTimeout(()=>{ input.style.borderColor='var(--border2)'; switchTab(subject); }, 1200);
+    } else {
+      input.style.borderColor = '#f87171';
+      errEl.textContent = 'Key khong hop le hoac sai dinh dang. Kiem tra lai.';
+      errEl.style.display='block'; okEl.style.display='none';
+      setTimeout(()=>{input.style.borderColor='var(--border2)';},800);
     }
-    // Unlock!
-    saveUnlockedSubject(subject, keyVal);
-    applyUnlockUI(subject);
-    input.value = '';
-    input.style.borderColor = '#4ade80';
-    errEl.style.display='none';
-    const labels = {csi:'CSI106',cea:'CEA201'};
-    okEl.textContent = '\u2713 Mo khoa ' + labels[subject] + ' thanh cong! Chuyen sang tab ' + labels[subject] + ' de bat dau.';
-    okEl.style.display = 'block';
-    refreshShopStatus();
-    // Auto-navigate to the unlocked subject
-    setTimeout(()=>{
-      input.style.borderColor='var(--border2)';
-      switchTab(subject);
-    }, 1200);
-  } else {
-    input.style.borderColor = '#f87171';
-    errEl.textContent = 'Key khong hop le hoac sai dinh dang. Kiem tra lai.';
-    errEl.style.display='block'; okEl.style.display='none';
-    setTimeout(()=>{input.style.borderColor='var(--border2)';},800);
-  }
+  });
 }
 
 function refreshShopStatus() {
@@ -3852,8 +3866,8 @@ function generateNewKey() {
   const prefix = (_genSubject === 'csi' ? 'CSI' : 'CEA').slice(0,3);
   const newKey = prefix + part().slice(0,1) + '-' + part() + '-' + part();
 
-  // Add to VALID_KEYS dynamically
-  VALID_KEYS[newKey] = _genSubject;
+  // Add hash to _KH for runtime verification
+  _hashKey(newKey).then(h => { _KH[_genSubject].push(h); });
 
   // Show result
   const result = document.getElementById('genResult');
@@ -3918,7 +3932,7 @@ function refreshGenHistory() {
   el.innerHTML = hist.slice(0,15).map(h =>
     `<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surface);border-radius:8px;border:1px solid var(--border)">
       <div style="width:6px;height:6px;border-radius:50%;background:${clr[h.subject]};flex-shrink:0"></div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;color:var(--txt);flex:1">${h.key}</div>
+      <div style="font-family:var(--font-mono);font-size:.8rem;font-weight:700;color:var(--txt);flex:1">${h.key}</div>
       <div style="font-size:.72rem;color:var(--muted)">${h.note||''}</div>
       <div style="font-size:.7rem;color:var(--muted);flex-shrink:0">${h.date}</div>
       <button onclick="navigator.clipboard.writeText('${h.key}')" style="background:none;border:1px solid var(--border2);color:var(--muted);border-radius:5px;padding:2px 7px;font-size:.68rem;cursor:pointer">Copy</button>
@@ -3927,12 +3941,8 @@ function refreshGenHistory() {
 }
 
 // Load saved generated keys into VALID_KEYS on startup
-(function loadSavedKeys() {
-  try {
-    const hist = JSON.parse(localStorage.getItem(GEN_HISTORY_KEY)) || [];
-    hist.forEach(h => { if(h.key && h.subject) VALID_KEYS[h.key] = h.subject; });
-  } catch(e) {}
-})();
+// Keys verified via hash - no need to load into VALID_KEYS
+// Generated keys are added to _KH at generation time (runtime only)
 </script>
 
 
@@ -3968,8 +3978,8 @@ function refreshGenHistory() {
 
     <div class="key-hint">
       Chua co key? <a onclick="openShopFromKey()">Nap diem de nhan key &rarr;</a><br>
-      Key CSI106: <span style="font-family:'JetBrains Mono',monospace;color:var(--csi)">20k/40k/100k VND</span><br>
-      Key CEA201: <span style="font-family:'JetBrains Mono',monospace;color:var(--cea)">50k/100k/200k VND</span>
+      Key CSI106: <span style="font-family:var(--font-mono);color:var(--csi)">20k/40k/100k VND</span><br>
+      Key CEA201: <span style="font-family:var(--font-mono);color:var(--cea)">50k/100k/200k VND</span>
     </div>
   </div>
 </div>
@@ -3980,19 +3990,19 @@ function refreshGenHistory() {
     <button class="modal-close" onclick="document.getElementById('keyGenModal').classList.remove('open')">&#x2715;</button>
     <div style="text-align:center;margin-bottom:20px">
       <div style="font-size:2rem;margin-bottom:10px">&#128273;</div>
-      <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--gold)">Key Generator</div>
+      <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:800;color:var(--gold)">Key Generator</div>
       <div style="font-size:.8rem;color:var(--muted);margin-top:4px">Tao key moi cho khach hang</div>
     </div>
 
     <!-- Owner password gate -->
     <div id="genPasswordGate">
       <input id="genPassword" type="password" placeholder="Mat khau chu so huu..."
-        style="width:100%;background:var(--raised);border:1.5px solid var(--border2);border-radius:10px;padding:12px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;color:var(--txt);outline:none;margin-bottom:10px;box-sizing:border-box"
+        style="width:100%;background:var(--raised);border:1.5px solid var(--border2);border-radius:10px;padding:12px 16px;font-family:var(--font-body);font-size:.95rem;color:var(--txt);outline:none;margin-bottom:10px;box-sizing:border-box"
         onkeydown="if(event.key==='Enter')checkGenPassword()"
         onfocus="this.style.borderColor='var(--gold)'"
         onblur="this.style.borderColor='var(--border2)'"
       >
-      <button onclick="checkGenPassword()" style="width:100%;background:var(--gold);color:var(--void);border:none;border-radius:10px;padding:11px;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer">Xac Nhan</button>
+      <button onclick="checkGenPassword()" style="width:100%;background:var(--gold);color:var(--void);border:none;border-radius:10px;padding:11px;font-family:var(--font-display);font-size:.9rem;font-weight:700;cursor:pointer">Xac Nhan</button>
       <div id="genPwError" style="display:none;color:#f87171;font-size:.78rem;text-align:center;margin-top:8px">Mat khau sai</div>
     </div>
 
@@ -4001,29 +4011,29 @@ function refreshGenHistory() {
       <div style="margin-bottom:16px">
         <label style="font-size:.8rem;color:var(--muted);display:block;margin-bottom:6px;font-weight:600;letter-spacing:.05em;text-transform:uppercase">Mon hoc</label>
         <div style="display:flex;gap:8px">
-          <button id="genBtnCSI" onclick="setGenSubject('csi')" style="flex:1;padding:10px;border:1.5px solid var(--csi);background:var(--csi-dk);color:var(--csi);border-radius:9px;font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer">CSI106</button>
-          <button id="genBtnCEA" onclick="setGenSubject('cea')" style="flex:1;padding:10px;border:1.5px solid var(--border2);background:var(--raised);color:var(--muted);border-radius:9px;font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer">CEA201</button>
+          <button id="genBtnCSI" onclick="setGenSubject('csi')" style="flex:1;padding:10px;border:1.5px solid var(--csi);background:var(--csi-dk);color:var(--csi);border-radius:9px;font-family:var(--font-display);font-weight:700;font-size:.88rem;cursor:pointer">CSI106</button>
+          <button id="genBtnCEA" onclick="setGenSubject('cea')" style="flex:1;padding:10px;border:1.5px solid var(--border2);background:var(--raised);color:var(--muted);border-radius:9px;font-family:var(--font-display);font-weight:700;font-size:.88rem;cursor:pointer">CEA201</button>
         </div>
       </div>
 
       <div style="margin-bottom:16px">
         <label style="font-size:.8rem;color:var(--muted);display:block;margin-bottom:6px;font-weight:600;letter-spacing:.05em;text-transform:uppercase">Ghi chu (tuy chon)</label>
         <input id="genNote" type="text" placeholder="Ten khach hang, SV ID..."
-          style="width:100%;background:var(--raised);border:1.5px solid var(--border2);border-radius:9px;padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;color:var(--txt);outline:none;box-sizing:border-box"
+          style="width:100%;background:var(--raised);border:1.5px solid var(--border2);border-radius:9px;padding:10px 14px;font-family:var(--font-body);font-size:.88rem;color:var(--txt);outline:none;box-sizing:border-box"
           onfocus="this.style.borderColor='var(--gold)'"
           onblur="this.style.borderColor='var(--border2)'"
         >
       </div>
 
-      <button onclick="generateNewKey()" style="width:100%;background:linear-gradient(135deg,var(--gold),#ff9500);color:var(--void);border:none;border-radius:10px;padding:13px;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;margin-bottom:16px;letter-spacing:.01em">
+      <button onclick="generateNewKey()" style="width:100%;background:linear-gradient(135deg,var(--gold),#ff9500);color:var(--void);border:none;border-radius:10px;padding:13px;font-family:var(--font-display);font-size:.95rem;font-weight:800;cursor:pointer;margin-bottom:16px;letter-spacing:.01em">
         Tao Key Moi &#10024;
       </button>
 
       <!-- Generated key display -->
       <div id="genResult" style="display:none;background:var(--raised);border:1px solid var(--border2);border-radius:12px;padding:18px;text-align:center">
         <div style="font-size:.75rem;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.1em;font-weight:600">Key vua tao</div>
-        <div id="genKeyDisplay" style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--gold);letter-spacing:.18em;margin-bottom:12px;padding:12px;background:var(--surface);border-radius:8px;border:1px solid rgba(244,196,48,.2)"></div>
-        <button onclick="copyGenKey()" id="genCopyBtn" style="background:transparent;border:1px solid var(--border2);color:var(--muted);border-radius:8px;padding:8px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--muted)'">
+        <div id="genKeyDisplay" style="font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:var(--gold);letter-spacing:.18em;margin-bottom:12px;padding:12px;background:var(--surface);border-radius:8px;border:1px solid rgba(244,196,48,.2)"></div>
+        <button onclick="copyGenKey()" id="genCopyBtn" style="background:transparent;border:1px solid var(--border2);color:var(--muted);border-radius:8px;padding:8px 20px;font-family:var(--font-body);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--muted)'">
           Sao Chep Key
         </button>
         <div id="genSubjectTag" style="margin-top:10px;font-size:.78rem;color:var(--muted)"></div>
