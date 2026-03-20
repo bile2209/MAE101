@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAE101 - Tom Tat Cong Thuc Toan</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+:root {
+  --ink: #1a1008;
+  --parchment: #f6f0e0;
+  --parchment-dark: #ede2c8;
+  --parchment-mid: #f0e8d0;
+  --sepia: #7a5c2e;
+  --red: #a93226;
+  --blue: #1a4f80;
+  --green: #1e6e45;
+  --gold: #b8860b;
+  --gold-light: #d4a017;
+  --shadow: rgba(90,60,10,0.15);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #2a1e0c;
+  font-family: 'EB Garamond', Georgia, serif;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* COVER */
+.cover {
+  background: linear-gradient(150deg,#3d2b10 0%,#1a1008 100%);
+  text-align: center;
+  padding: 56px 20px 44px;
+  border-bottom: 5px solid var(--gold);
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content:'';
+  position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23b8860b' fill-opacity='0.04'%3E%3Cpath d='M40 40m-30 0a30 30 0 1 0 60 0a30 30 0 1 0-60 0M40 16v48M16 40h48'/%3E%3C/g%3E%3C/svg%3E");
+}
+.cover h1 {
+  font-family:'Cinzel',serif;
+  color:var(--gold);
+  font-size:clamp(1.8rem,4vw,3.2rem);
+  font-weight:600;
+  letter-spacing:.12em;
+  text-shadow:0 2px 16px rgba(184,134,11,.4);
+  position:relative;
+}
+.cover .sub {
+  color:#c9b48a;
+  font-size:1.1rem;
+  margin-top:8px;
+  font-style:italic;
+  position:relative;
+}
+.cover .auth {
+  color:#8a7050;
+  font-size:.88rem;
+  margin-top:6px;
+  font-family:'JetBrains Mono',monospace;
+  position:relative;
+}
+.orn { color:var(--gold);font-size:1.6rem;display:block;margin:12px 0;opacity:.55;position:relative; }
+
+/* NAV */
+.nav {
+  background:#1a1008;
+  padding:10px 16px;
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  justify-content:center;
+  position:sticky;top:0;z-index:100;
+  border-bottom:2px solid #3d2b10;
+  box-shadow:0 2px 12px rgba(0,0,0,.5);
+}
+.nb {
+  background:transparent;
+  border:1px solid #5a4020;
+  color:#c9b48a;
+  padding:5px 12px;
+  font-family:'EB Garamond',serif;
+  font-size:.85rem;
+  cursor:pointer;
+  border-radius:2px;
+  transition:all .18s;
+  letter-spacing:.04em;
+  white-space:nowrap;
+}
+.nb:hover,.nb.active {
+  background:var(--gold);
+  color:#1a1008;
+  border-color:var(--gold);
+  font-weight:600;
+}
+
+/* MAIN */
+.wrap { max-width:1120px; margin:0 auto; padding:28px 16px 70px; }
+.sec { display:none; }
+.sec.active { display:block; }
+
+/* CHAPTER HEADER */
+.ch-hd {
+  background:linear-gradient(135deg,var(--parchment),var(--parchment-dark));
+  border-left:6px solid var(--sepia);
+  padding:18px 24px;
+  margin-bottom:26px;
+  border-radius:0 4px 4px 0;
+  box-shadow:3px 3px 14px var(--shadow);
+}
+.ch-hd .num { font-family:'Cinzel',serif;color:var(--sepia);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase; }
+.ch-hd h2 { font-family:'Cinzel',serif;color:var(--ink);font-size:clamp(1.4rem,3vw,2rem);margin-top:3px; }
+.ch-hd p { color:#5a4020;font-style:italic;margin-top:5px;font-size:.97rem; }
+
+/* OBSERVATION */
+.obs {
+  background:linear-gradient(135deg,#fff9ee,#fdf3d5);
+  border:1px solid #e0c878;
+  border-radius:3px;
+  padding:14px 18px;
+  margin-bottom:22px;
+  box-shadow:1px 3px 8px rgba(180,140,30,.09);
+}
+.obs::before { content:'Quan sat'; font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;display:block;margin-bottom:6px; }
+.obs p { font-style:italic;color:#4a3010;line-height:1.7;font-size:.95rem; }
+
+/* GRID */
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(460px,1fr)); gap:18px; margin-bottom:22px; }
+@media(max-width:580px){ .grid{ grid-template-columns:1fr; } }
+
+/* CARD */
+.card {
+  background:var(--parchment);
+  border:1px solid #d4c09a;
+  border-radius:3px;
+  padding:18px 20px;
+  box-shadow:2px 4px 12px var(--shadow);
+  position:relative;
+  transition:transform .14s,box-shadow .14s;
+}
+.card:hover { transform:translateY(-2px);box-shadow:4px 8px 20px var(--shadow); }
+.card::after {
+  content:'';position:absolute;top:0;right:0;
+  width:0;height:0;
+  border-style:solid;
+  border-width:0 20px 20px 0;
+  border-color:transparent var(--parchment-dark) transparent transparent;
+}
+
+/* TAG */
+.tag {
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.66rem;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:2px 8px;
+  border-radius:2px;
+  margin-bottom:9px;
+}
+.td { background:#e5f0f8;color:var(--blue); }
+.tf { background:#fdf3e3;color:var(--gold); }
+.tt { background:#ecf7ec;color:var(--green); }
+.tr { background:#fcecea;color:var(--red); }
+.tn { background:#f5f0e8;color:var(--sepia); }
+.te { background:#f0eaff;color:#6b21a8; }
+
+.card h3 {
+  font-family:'Cinzel',serif;
+  font-size:.97rem;
+  font-weight:600;
+  color:var(--ink);
+  margin-bottom:7px;
+  border-bottom:1px dotted #c4a870;
+  padding-bottom:5px;
+}
+.card p,.card li { font-size:.93rem;line-height:1.65;color:#2c1e0a; }
+.card ul,.card ol { padding-left:18px;margin-top:5px; }
+.card li { margin-bottom:3px; }
+
+/* FORMULA BOX */
+.fm {
+  background:var(--parchment-dark);
+  border-left:3px solid var(--gold);
+  padding:10px 14px;
+  margin:9px 0;
+  text-align:center;
+  overflow-x:auto;
+  border-radius:0 3px 3px 0;
+}
+
+/* EXAMPLE BOX */
+.ex {
+  background:#fffdf5;
+  border:1px solid #d4c090;
+  border-radius:3px;
+  padding:11px 14px;
+  margin-top:10px;
+  position:relative;
+}
+.ex::before {
+  content:'Vi du';
+  font-family:'Cinzel',serif;
+  font-size:.65rem;
+  color:var(--sepia);
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  display:block;
+  margin-bottom:5px;
+  font-weight:600;
+}
+.ex p,.ex li { font-size:.9rem;color:#3a2810;line-height:1.6; }
+.ex ul,.ex ol { padding-left:16px;margin-top:4px; }
+
+/* SOLUTION BOX */
+.sol {
+  background:#f0f9f0;
+  border-left:3px solid var(--green);
+  padding:8px 13px;
+  margin-top:7px;
+  border-radius:0 3px 3px 0;
+}
+.sol::before {
+  content:'Giai';
+  font-family:'Cinzel',serif;
+  font-size:.65rem;
+  color:var(--green);
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  display:block;
+  margin-bottom:4px;
+  font-weight:600;
+}
+.sol p,.sol li { font-size:.9rem;color:#1e3a1e;line-height:1.6; }
+.sol ul,.sol ol { padding-left:16px; }
+
+/* FULL CARD */
+.full {
+  background:var(--parchment);
+  border:1px solid #d4c09a;
+  border-radius:3px;
+  padding:20px 24px;
+  box-shadow:2px 4px 12px var(--shadow);
+  margin-bottom:18px;
+}
+.full h3 { font-family:'Cinzel',serif;font-size:1rem;color:var(--ink);border-bottom:1px dotted #c4a870;padding-bottom:6px;margin-bottom:11px; }
+.full p,.full li { font-size:.93rem;line-height:1.7;color:#2c1e0a; }
+.full ul,.full ol { padding-left:20px;margin-top:7px; }
+.full li { margin-bottom:4px; }
+
+/* TABLE */
+.tbl { width:100%;border-collapse:collapse;margin:10px 0;font-size:.88rem; }
+.tbl th { background:var(--parchment-dark);color:var(--sepia);font-family:'Cinzel',serif;font-size:.73rem;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:2px solid #c4a870; }
+.tbl td { padding:7px 12px;border-bottom:1px solid #e0d0b0;color:#2c1e0a;vertical-align:middle; }
+.tbl tr:nth-child(even) td { background:rgba(180,150,80,.055); }
+
+/* SEP */
+.sep { text-align:center;margin:28px 0;color:#c4a870;font-size:1.3rem;letter-spacing:.5em;opacity:.45; }
+
+/* FOOTER */
+footer {
+  background:#1a1008;
+  text-align:center;
+  padding:22px;
+  border-top:3px solid var(--gold);
+  color:#8a7050;
+  font-style:italic;
+  font-size:.88rem;
+}
+footer span { color:var(--gold);font-family:'Cinzel',serif;font-size:.73rem;letter-spacing:.15em;display:block;margin-top:4px; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <span class="orn">* * *</span>
+  <h1>MAE101 &mdash; Tóm Tắt Công Thức Toán</h1>
+  <p class="sub">Đại Số Tuyến Tính &amp; Giải Tích &mdash; Codex Atlanticus Mathematicus</p>
+  <p class="auth">Lê Văn Bi &nbsp;|&nbsp; VoTranDuy MAE101 &nbsp;|&nbsp; FPT University</p>
+  <span class="orn">* * *</span>
+</div>
+
+<nav class="nav">
+  <button class="nb active" onclick="show('a1')">ALG 1: Ma Trận</button>
+  <button class="nb" onclick="show('a2')">ALG 2: Hệ PT</button>
+  <button class="nb" onclick="show('a3')">ALG 3: Định Thức</button>
+  <button class="nb" onclick="show('a4')">ALG 4: Không Gian</button>
+  <button class="nb" onclick="show('c1')">CAL 1: Hàm Số</button>
+  <button class="nb" onclick="show('c2')">CAL 2: Giới Hạn</button>
+  <button class="nb" onclick="show('c3')">CAL 3: Đạo Hàm</button>
+  <button class="nb" onclick="show('c4')">CAL 4: Ứng Dụng</button>
+  <button class="nb" onclick="show('c5')">CAL 5-6: Tích Phân</button>
+</nav>
+
+<div class="wrap">
+
+<!-- =========== ALG 1 =========== -->
+<div id="a1" class="sec active">
+  <div class="ch-hd">
+    <div class="num">Algebra &mdash; Chapter 1</div>
+    <h2>Ma Trận (Matrix Algebra)</h2>
+    <p>Bảng số sắp xếp thành hàng và cột &mdash; ngôn ngữ nền tảng của đại số tuyến tính.</p>
+  </div>
+
+  <div class="obs"><p>Hình dung ma trận như bảng kế hoạch xưởng: n hàng là nhiệm vụ, m cột là tài nguyên. Ô a(i,j) là lượng tài nguyên j dành cho nhiệm vụ i. Mọi phép toán ma trận là cách phối hợp các bảng đó.</p></div>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Ma Trận n×m</h3>
+      <p>Tập hợp n×m số thực xếp thành n hàng, m cột. a<sub>i,j</sub> là phần tử hàng i cột j.</p>
+      <div class="fm">\[ A_{n\times m}=(a_{i,j})\in\mathbb{R}^{n\times m} \]</div>
+      <ul>
+        <li><strong>Ma trận 0:</strong> mọi phần tử bằng 0</li>
+        <li><strong>Ma trận vuông:</strong> n = m</li>
+        <li><strong>Ma trận đơn vị I<sub>n</sub>:</strong> đường chéo = 1, còn lại = 0</li>
+        <li><strong>Tam giác trên/dưới:</strong> phần dưới/trên đường chéo = 0</li>
+      </ul>
+      <div class="ex">
+        <p>Ma trận vuông 3×3 có đường chéo chính là a<sub>11</sub>, a<sub>22</sub>, a<sub>33</sub>:</p>
+        <div class="fm">\[A=\begin{pmatrix}-1&3&2\\2&-1&1\\5&2&3\end{pmatrix}\]</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Ma Trận Bằng Nhau &amp; Tích Vô Hướng</h3>
+      <p>Hai ma trận bằng nhau khi cùng kích thước và mọi phần tử tương ứng bằng nhau.</p>
+      <div class="fm">\[(kA)_{ij}=k\cdot a_{ij}\]</div>
+      <div class="ex">
+        <p>Tìm x, y, z biết:</p>
+        <div class="fm">\[\begin{pmatrix}x+1&1\\2x-1&z\end{pmatrix}=\begin{pmatrix}3y-4&1\\y-1&2z+2\end{pmatrix}\]</div>
+        <div class="sol"><p>x+1=3y-4; 2x-1=y-1; z=2z+2. Giải: <strong>x=2, y=7/3, z=-2</strong></p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Cộng &amp; Trừ Ma Trận</h3>
+      <div class="fm">\[(A\pm B)_{ij}=a_{ij}\pm b_{ij}\]</div>
+      <p>Chỉ thực hiện khi A và B cùng kích thước.</p>
+      <div class="ex">
+        <p>Tính A+B và A-B với:</p>
+        <div class="fm">\[A=\begin{pmatrix}2&1&3\\-1&2&0\end{pmatrix},\quad B=\begin{pmatrix}1&1&-1\\2&0&6\end{pmatrix}\]</div>
+        <div class="sol">
+          <div class="fm">\[A+B=\begin{pmatrix}3&2&2\\1&2&6\end{pmatrix},\quad A-B=\begin{pmatrix}1&0&4\\-3&2&-6\end{pmatrix}\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Nhân Ma Trận (A<sub>m×n</sub> · B<sub>n×p</sub>)</h3>
+      <div class="fm">\[(AB)_{ij}=\sum_{k=1}^{n}a_{ik}b_{kj}\]</div>
+      <p>A·B tồn tại khi số cột A = số hàng B. AB ≠ BA (không giao hoán).</p>
+      <div class="ex">
+        <p>Tính AB với A (3×3), B (3×2):</p>
+        <div class="fm">\[A=\begin{pmatrix}2&3&5\\1&4&7\\0&1&8\end{pmatrix},\quad B=\begin{pmatrix}8&9\\7&2\\6&1\end{pmatrix}\]</div>
+        <div class="sol">
+          <div class="fm">\[AB=\begin{pmatrix}67&29\\78&24\\55&10\end{pmatrix}\]</div>
+          <p>Ví dụ: (AB)<sub>11</sub> = 2·8+3·7+5·6 = 16+21+30 = <strong>67</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Lũy Thừa &amp; Chuyển Vị</h3>
+      <div class="fm">\[A^k=\underbrace{A\cdot A\cdots A}_{k},\quad (A^T)_{ij}=a_{ji}\]</div>
+      <ul>
+        <li>A<sup>T</sup>=A : ma trận đối xứng</li>
+        <li>A<sup>T</sup>=−A : ma trận phản xứng</li>
+        <li>(AB)<sup>T</sup>=B<sup>T</sup>A<sup>T</sup></li>
+      </ul>
+      <div class="ex">
+        <p>Với A=\(\begin{pmatrix}1&3\\0&1\end{pmatrix}\), tính A² và A³.</p>
+        <div class="sol">
+          <div class="fm">\[A^2=\begin{pmatrix}1&6\\0&1\end{pmatrix},\quad A^3=\begin{pmatrix}1&9\\0&1\end{pmatrix}\]</div>
+          <p>Nhận xét: A<sup>n</sup>=\(\begin{pmatrix}1&3n\\0&1\end{pmatrix}\)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tr">Quy tắc</span>
+      <h3>Biến Đổi Hàng Sơ Cấp &amp; Hạng</h3>
+      <ul>
+        <li><strong>R<sub>i</sub> ↔ R<sub>j</sub>:</strong> Đổi chỗ hàng</li>
+        <li><strong>αR<sub>i</sub>:</strong> Nhân hàng với α ≠ 0</li>
+        <li><strong>R<sub>i</sub>+βR<sub>j</sub>:</strong> Cộng bội hàng</li>
+      </ul>
+      <p style="margin-top:6px">rank(A) = số hàng ≠ 0 sau khi về dạng bậc thang (REF).</p>
+      <div class="ex">
+        <p>Tìm hạng của B = \(\begin{pmatrix}1&2&-1\\2&4&-3\\3&-1&0\end{pmatrix}\)</p>
+        <div class="sol"><p>Biến đổi hàng → 2 hàng ≠ 0 → <strong>rank(B) = 2</strong></p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tt">Định lý</span>
+      <h3>Ma Trận Nghịch Đảo A<sup>-1</sup></h3>
+      <div class="fm">\[AA^{-1}=I_n,\quad A^{-1}=\frac{1}{\det A}\,\text{adj}(A)\]</div>
+      <p>Tìm A<sup>-1</sup> bằng BĐHSC: [A|I] → [I|A<sup>-1</sup>]</p>
+      <ul>
+        <li>(AB)<sup>-1</sup>=B<sup>-1</sup>A<sup>-1</sup></li>
+        <li>(A<sup>T</sup>)<sup>-1</sup>=(A<sup>-1</sup>)<sup>T</sup></li>
+      </ul>
+      <div class="ex">
+        <p>Tìm A<sup>-1</sup> với A=\(\begin{pmatrix}1&1&1\\1&2&2\\1&2&3\end{pmatrix}\)</p>
+        <div class="sol">
+          <p>Lập [A|I₃], biến đổi hàng đến [I₃|A<sup>-1</sup>]:</p>
+          <div class="fm">\[A^{-1}=\begin{pmatrix}2&-1&0\\-1&2&-1\\0&-1&1\end{pmatrix}\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Phương Trình Ma Trận Ax = b</h3>
+      <div class="fm">\[x=A^{-1}b\quad(\text{khi }\det A\neq 0)\]</div>
+      <div class="ex">
+        <p>Giải XA = B với A=\(\begin{pmatrix}3&1\\5&2\end{pmatrix}\), B=\(\begin{pmatrix}-2&3\\2&5\end{pmatrix}\)</p>
+        <div class="sol">
+          <p>X = BA<sup>-1</sup>. Trước tiên A<sup>-1</sup>=\(\begin{pmatrix}2&-1\\-5&3\end{pmatrix}\).</p>
+          <div class="fm">\[X=\begin{pmatrix}-2&3\\2&5\end{pmatrix}\begin{pmatrix}2&-1\\-5&3\end{pmatrix}=\begin{pmatrix}-19&11\\-21&17\end{pmatrix}\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Phép Biến Đổi Tuyến Tính</h3>
+      <p>T:ℝⁿ→ℝᵐ tuyến tính nếu T(u+v)=T(u)+T(v) và T(ku)=kT(u).</p>
+      <div class="fm">\[T(\mathbf{x})=A\mathbf{x}\]</div>
+      <div class="ex">
+        <p>T:ℝ²→ℝ² biết T\(\begin{pmatrix}1\\1\end{pmatrix}\)=\(\begin{pmatrix}2\\-3\end{pmatrix}\), T\(\begin{pmatrix}1\\-2\end{pmatrix}\)=\(\begin{pmatrix}5\\1\end{pmatrix}\). Tìm T\(\begin{pmatrix}4\\3\end{pmatrix}\).</p>
+        <div class="sol">
+          <p>Viết \(\begin{pmatrix}4\\3\end{pmatrix}=\frac{11}{3}\begin{pmatrix}1\\1\end{pmatrix}+\frac{1}{3}\begin{pmatrix}1\\-2\end{pmatrix}\)</p>
+          <div class="fm">\[T\begin{pmatrix}4\\3\end{pmatrix}=\frac{11}{3}\begin{pmatrix}2\\-3\end{pmatrix}+\frac{1}{3}\begin{pmatrix}5\\1\end{pmatrix}=\begin{pmatrix}9\\-32/3\end{pmatrix}\]</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========== ALG 2 =========== -->
+<div id="a2" class="sec">
+  <div class="ch-hd">
+    <div class="num">Algebra &mdash; Chapter 2</div>
+    <h2>Hệ Phương Trình Tuyến Tính</h2>
+    <p>Tìm giao điểm của nhiều siêu phẳng trong không gian n chiều.</p>
+  </div>
+  <div class="obs"><p>Mỗi phương trình là một ràng buộc: tổng tài nguyên phải đạt mức nhất định. Nghiệm là cấu hình thỏa mọi ràng buộc cùng lúc. Đôi khi không tồn tại, đôi khi có vô số.</p></div>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Hệ m PT n Ẩn</h3>
+      <div class="fm">\[\begin{cases}a_{11}x_1+\cdots+a_{1n}x_n=b_1\\\vdots\\a_{m1}x_1+\cdots+a_{mn}x_n=b_m\end{cases}\]</div>
+      <p>Dạng ma trận: <strong>Ax = b</strong></p>
+      <div class="ex">
+        <p>Lập ma trận mở rộng của:</p>
+        <div class="fm">\[\begin{cases}x_1-x_2+2x_3+4x_4=4\\2x_1+x_2+4x_3=-3\\2x_2-7x_3=5\end{cases}\]</div>
+        <div class="sol">
+          <div class="fm">\[\bar{A}=\begin{pmatrix}1&-1&2&4&4\\2&1&4&0&-3\\0&2&-7&0&5\end{pmatrix}\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tt">Định lý</span>
+      <h3>Định Lý Kronecker-Capelli</h3>
+      <p>Hệ Ax=b có nghiệm khi và chỉ khi:</p>
+      <div class="fm">\[\text{rank}(A)=\text{rank}([A|b])\]</div>
+      <ul>
+        <li>rank(A) = rank([A|b]) = n : <strong>nghiệm duy nhất</strong></li>
+        <li>rank(A) = rank([A|b]) &lt; n : <strong>vô số nghiệm</strong></li>
+        <li>rank(A) &lt; rank([A|b]) : <strong>vô nghiệm</strong></li>
+      </ul>
+      <div class="ex">
+        <p>Khảo sát và giải hệ:</p>
+        <div class="fm">\[\begin{cases}x+y+2z=1\\2x+y+3z=2\\3x+2y+5z=3\end{cases}\]</div>
+        <div class="sol">
+          <p>rank(A)=2, rank([A|b])=2, n=3 → vô số nghiệm. Đặt z=t tự do:</p>
+          <div class="fm">\[x=1-t,\; y=t,\; z=t,\quad t\in\mathbb{R}\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tr">Quy trình</span>
+      <h3>Phương Pháp Gauss-Jordan</h3>
+      <ol>
+        <li>Lập ma trận mở rộng [A|b]</li>
+        <li>BĐHSC đưa về RREF</li>
+        <li>Đọc nghiệm hoặc biểu diễn nghiệm tổng quát</li>
+      </ol>
+      <div class="ex">
+        <p>Giải hệ 3 phương trình kinh tế:</p>
+        <div class="fm">\[\begin{cases}2x_1+3x_2+4x_3=3200\\x_1+2x_2+x_3=1700\\x_1+x_2+2x_3=1300\end{cases}\]</div>
+        <div class="sol">
+          <p>BĐHSC → RREF → <strong>x₁=900, x₂=400, x₃=0</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Hệ Thuần Nhất (b = 0)</h3>
+      <div class="fm">\[Ax=\mathbf{0}\]</div>
+      <p>Luôn có nghiệm tầm thường x=0. Có nghiệm khác 0 khi rank(A) &lt; n.</p>
+      <p style="margin-top:6px"><strong>Nghiệm tổng quát</strong> = nghiệm riêng + tổ hợp tuyến tính nghiệm cơ bản hệ thuần nhất.</p>
+      <div class="ex">
+        <p>Hệ có thông số m; khi nào có nghiệm?</p>
+        <div class="fm">\[\begin{cases}3x_1+5x_2+3x_3-4x_4=1\\2x_1+3x_2+x_3+x_4=0\\5x_1+9x_2+6x_3-15x_4=2\\13x_1+22x_2+13x_3-22x_4=2m\end{cases}\]</div>
+        <div class="sol"><p>BĐHSC → hệ có nghiệm khi <strong>m=1</strong></p></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========== ALG 3 =========== -->
+<div id="a3" class="sec">
+  <div class="ch-hd">
+    <div class="num">Algebra &mdash; Chapter 3</div>
+    <h2>Định Thức &amp; Chéo Hóa</h2>
+    <p>Định thức đo thể tích; trị riêng là hướng bất biến của phép biến đổi.</p>
+  </div>
+  <div class="obs"><p>Định thức là thước đo "độ co giãn không gian" của phép biến đổi tuyến tính. det=0 nghĩa là ma trận "ép phẳng" không gian xuống ít chiều hơn, do đó không có nghịch đảo.</p></div>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Định Thức 2×2 và 3×3</h3>
+      <div class="fm">\[\det\begin{pmatrix}a&b\\c&d\end{pmatrix}=ad-bc\]</div>
+      <div class="fm">\[\det(A_{3\times3})=\sum_{j=1}^{3}a_{1j}\cdot(-1)^{1+j}\cdot\det A(1|j)\]</div>
+      <div class="ex">
+        <p>Tính: \(\det\begin{pmatrix}4&-2\\3&5\end{pmatrix}\) và \(\det B\) với B tam giác trên \(\begin{pmatrix}2&3&4\\0&-3&9\\0&0&4\end{pmatrix}\)</p>
+        <div class="sol">
+          <div class="fm">\[\det\begin{pmatrix}4&-2\\3&5\end{pmatrix}=20+6=26\]</div>
+          <p>B tam giác → det B = 2·(−3)·4 = <strong>−24</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tt">Tính chất</span>
+      <h3>Tính Chất Định Thức</h3>
+      <ul>
+        <li>det(A<sup>T</sup>) = det(A)</li>
+        <li>Đổi 2 hàng: đổi dấu</li>
+        <li>Hàng toàn 0 hoặc 2 hàng tỉ lệ: det = 0</li>
+        <li>Cộng bội hàng khác: det không đổi</li>
+        <li>det(kA) = k<sup>n</sup>·det(A)</li>
+        <li>det(AB) = det(A)·det(B)</li>
+        <li>det(A<sup>-1</sup>) = 1/det(A)</li>
+        <li>|adj(A)| = |A|<sup>n-1</sup></li>
+      </ul>
+      <div class="ex">
+        <p>Biết \(|A|=3,\,|B|=-2\) (A,B∈M₃). Tính |(2AB)⁻¹| và |adj(AB)|.</p>
+        <div class="sol">
+          <div class="fm">\[|(2AB)^{-1}|=\frac{1}{2^3|A||B|}=\frac{1}{-48}=-\frac{1}{48}\]</div>
+          <div class="fm">\[|\text{adj}(AB)|=|AB|^2=(3\cdot(-2))^2=36\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Cofactor &amp; Ma Trận Bù Hợp</h3>
+      <div class="fm">\[c_{ij}=(-1)^{i+j}\det A(i|j)\]</div>
+      <div class="fm">\[A^{-1}=\frac{1}{\det A}\,\text{adj}(A),\quad \text{adj}(A)=C^T\]</div>
+      <div class="ex">
+        <p>Với A=\(\begin{pmatrix}1&1&1\\2&3&1\\3&4&0\end{pmatrix}\). Tìm c₁₂ và c₃₁.</p>
+        <div class="sol">
+          <div class="fm">\[c_{12}=(-1)^{1+2}\det\begin{pmatrix}2&1\\3&0\end{pmatrix}=-(-3)=3\]</div>
+          <div class="fm">\[c_{31}=(-1)^{3+1}\det\begin{pmatrix}1&1\\3&1\end{pmatrix}=1-3=-2\]</div>
+          <p>det(A)=−2≠0 → A khả nghịch.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Quy Tắc Cramer</h3>
+      <p>Hệ Ax=b, det(A)≠0:</p>
+      <div class="fm">\[x_i=\frac{\det A_i}{\det A}\]</div>
+      <p>A<sub>i</sub>: thay cột i của A bởi b.</p>
+      <div class="ex">
+        <p>Tìm x₁ trong hệ:</p>
+        <div class="fm">\[\begin{cases}5x_1+x_2-x_3=4\\9x_1+x_2-x_3=1\\x_1-x_2+5x_3=2\end{cases}\]</div>
+        <div class="sol">
+          <p>Tính det(A) và det(A₁) bằng khai triển cofactor. Kết quả: <strong>x₁ = 3/8</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Trị Riêng &amp; Vectơ Riêng</h3>
+      <p>λ là trị riêng, x≠0 là vectơ riêng khi Ax=λx.</p>
+      <div class="fm">\[\det(A-\lambda I)=0\quad\text{(phương trình đặc trưng)}\]</div>
+      <p>Với mỗi λ, giải (A−λI)x=0 để tìm vectơ riêng.</p>
+      <div class="ex">
+        <p>Tìm trị riêng của A=\(\begin{pmatrix}3&1\\1&3\end{pmatrix}\)</p>
+        <div class="sol">
+          <div class="fm">\[\det(A-\lambda I)=(3-\lambda)^2-1=0\Rightarrow\lambda_1=2,\;\lambda_2=4\]</div>
+          <p>λ₁=2 → x=(1,−1)<sup>T</sup>; λ₂=4 → x=(1,1)<sup>T</sup></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tt">Định lý</span>
+      <h3>Chéo Hóa Ma Trận</h3>
+      <p>A chéo hóa được khi có n vectơ riêng độc lập tuyến tính.</p>
+      <div class="fm">\[A=PDP^{-1}\]</div>
+      <ul>
+        <li>D: ma trận đường chéo gồm các λ</li>
+        <li>P: các cột là vectơ riêng tương ứng</li>
+        <li>n trị riêng phân biệt → luôn chéo hóa được</li>
+        <li>Ma trận đối xứng luôn chéo hóa được</li>
+      </ul>
+      <div class="ex">
+        <p>Ứng dụng: tính A<sup>n</sup> = PD<sup>n</sup>P<sup>-1</sup>, trong đó D<sup>n</sup> = diag(λ₁<sup>n</sup>, λ₂<sup>n</sup>, ...).</p>
+        <div class="sol"><p>Với A ở ví dụ trên: A<sup>n</sup> = P·diag(2<sup>n</sup>,4<sup>n</sup>)·P<sup>-1</sup></p></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========== ALG 4 =========== -->
+<div id="a4" class="sec">
+  <div class="ch-hd">
+    <div class="num">Algebra &mdash; Chapter 4</div>
+    <h2>Không Gian Vector ℝⁿ</h2>
+    <p>Các tập hợp vectơ có cấu trúc: cơ sở, chiều, tích vô hướng.</p>
+  </div>
+  <div class="obs"><p>Không gian con giống sàn phẳng bên trong căn phòng 3D: tập điểm đạt được bằng cách đi theo một số hướng cố định từ gốc. Cơ sở là bộ hướng tối thiểu để đến mọi điểm trong sàn đó.</p></div>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Không Gian Con (Subspace)</h3>
+      <p>W ⊆ ℝⁿ là không gian con khi:</p>
+      <ul>
+        <li>0 ∈ W</li>
+        <li>x, y ∈ W ⇒ x+y ∈ W</li>
+        <li>x ∈ W ⇒ αx ∈ W</li>
+      </ul>
+      <div class="ex">
+        <p>W={(x₁,x₂,x₃)∈ℝ³ | x₁+3x₂+x₃=1} có phải không gian con ℝ³ không?</p>
+        <div class="sol"><p>0=(0,0,0): 0+0+0=0≠1 → <strong>0∉W → W không phải không gian con.</strong></p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Độc Lập Tuyến Tính</h3>
+      <div class="fm">\[c_1v_1+\cdots+c_kv_k=\mathbf{0}\Rightarrow c_1=\cdots=c_k=0\]</div>
+      <p>Kiểm tra: lập ma trận, nếu rank = k thì độc lập.</p>
+      <div class="ex">
+        <p>v₁=(1,2,3), v₂=(0,1,2), v₃=(1,1,1) có độc lập không?</p>
+        <div class="sol">
+          <div class="fm">\[\det\begin{pmatrix}1&0&1\\2&1&1\\3&2&1\end{pmatrix}=-2\neq 0\Rightarrow\text{Độc lập tuyến tính}\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Cơ Sở &amp; Chiều</h3>
+      <ul>
+        <li>Cơ sở = tập độc lập tuyến tính tạo ra W</li>
+        <li>dim(W) = số vectơ trong cơ sở bất kỳ</li>
+        <li>dim(ℝⁿ) = n</li>
+      </ul>
+      <div class="fm">\[\text{rank}(A)+\text{nullity}(A)=n\]</div>
+      <div class="ex">
+        <p>A (3×5), rank(A)=3. Tìm nullity(A).</p>
+        <div class="sol"><p>nullity(A) = 5−3 = <strong>2</strong>. Không gian null có chiều 2.</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Không Gian Hàng, Cột, Null</h3>
+      <ul>
+        <li><strong>Row(A)</strong>: bao của hàng → dim = rank(A)</li>
+        <li><strong>Col(A)</strong>: bao của cột → dim = rank(A)</li>
+        <li><strong>Null(A)</strong>: nghiệm Ax=0 → dim = n − rank(A)</li>
+      </ul>
+      <div class="ex">
+        <p>Tìm cơ sở Null(A) với A=\(\begin{pmatrix}1&2&0\\0&0&1\end{pmatrix}\)</p>
+        <div class="sol">
+          <p>RREF: x₁=−2x₂, x₃=0. Đặt x₂=t → Null(A) = span{(−2,1,0)<sup>T</sup>}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Tích Vô Hướng, Chuẩn, Khoảng Cách</h3>
+      <div class="fm">\[u\cdot v=\sum_{i=1}^n u_iv_i=\|u\|\|v\|\cos\theta\]</div>
+      <div class="fm">\[\|v\|=\sqrt{v_1^2+\cdots+v_n^2},\quad d(u,v)=\|u-v\|\]</div>
+      <div class="ex">
+        <p>u=(1,2,−2), v=(3,0,1). Tính góc θ.</p>
+        <div class="sol">
+          <div class="fm">\[u\cdot v=3+0-2=1,\;\|u\|=3,\;\|v\|=\sqrt{10}\]</div>
+          <div class="fm">\[\cos\theta=\frac{1}{3\sqrt{10}}\Rightarrow\theta\approx83.9°\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tt">Định lý</span>
+      <h3>Gram-Schmidt (Trực Chuẩn Hóa)</h3>
+      <p>Từ cơ sở {v₁,...,vₖ} tạo cơ sở trực chuẩn {e₁,...,eₖ}:</p>
+      <div class="fm">\[u_k=v_k-\sum_{j=1}^{k-1}\frac{v_k\cdot u_j}{\|u_j\|^2}u_j,\quad e_k=\frac{u_k}{\|u_k\|}\]</div>
+      <div class="ex">
+        <p>Trực chuẩn hóa {v₁=(1,1,0), v₂=(1,0,1)}.</p>
+        <div class="sol">
+          <p>e₁=\(\frac{1}{\sqrt{2}}(1,1,0)\). u₂=v₂−\(\frac{v_2\cdot u_1}{\|u_1\|^2}\)u₁=(1,0,1)−\(\frac{1}{2}\)(1,1,0)=(\(\frac{1}{2},-\frac{1}{2},1\))</p>
+          <p>e₂=\(\frac{1}{\sqrt{6/2}}\)(\(\frac{1}{2},-\frac{1}{2},1\))</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Đường Thẳng &amp; Mặt Phẳng Trong ℝ³</h3>
+      <p><strong>Đường thẳng:</strong> qua điểm P₀, hướng d:</p>
+      <div class="fm">\[\mathbf{r}=\mathbf{p_0}+t\mathbf{d},\quad t\in\mathbb{R}\]</div>
+      <p><strong>Mặt phẳng:</strong> qua P₀, pháp tuyến n:</p>
+      <div class="fm">\[\mathbf{n}\cdot(\mathbf{r}-\mathbf{p_0})=0\quad\Leftrightarrow\quad ax+by+cz=d\]</div>
+      <div class="ex">
+        <p>Mặt phẳng qua (1,2,3), pháp tuyến n=(2,−1,4):</p>
+        <div class="sol"><div class="fm">\[2(x-1)-(y-2)+4(z-3)=0\Rightarrow 2x-y+4z=12\]</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========== CAL 1 =========== -->
+<div id="c1" class="sec">
+  <div class="ch-hd">
+    <div class="num">Calculus &mdash; Chapter 1</div>
+    <h2>Hàm Số &amp; Đồ Thị</h2>
+    <p>Quy tắc ánh xạ từ tập số này sang tập số khác.</p>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Hàm Số &amp; Phân Loại</h3>
+      <p>f: D→ℝ gán mỗi x∈D một giá trị duy nhất f(x).</p>
+      <ul>
+        <li><strong>Chẵn:</strong> f(−x)=f(x) — đối xứng qua Oy</li>
+        <li><strong>Lẻ:</strong> f(−x)=−f(x) — đối xứng qua O</li>
+        <li><strong>Tuần hoàn:</strong> f(x+T)=f(x)</li>
+        <li><strong>Tăng:</strong> x₁&lt;x₂ ⇒ f(x₁)&lt;f(x₂)</li>
+      </ul>
+      <div class="ex">
+        <p>f(x)=x²+cos(x). Xác định tính chẵn lẻ.</p>
+        <div class="sol"><p>f(−x)=(−x)²+cos(−x)=x²+cos(x)=f(x) → <strong>hàm chẵn</strong></p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Tập Xác Định Các Hàm Cơ Bản</h3>
+      <table class="tbl">
+        <tr><th>Hàm f(x)</th><th>Điều kiện D</th></tr>
+        <tr><td>\(\sqrt{g(x)}\)</td><td>g(x) ≥ 0</td></tr>
+        <tr><td>\(\sqrt[n]{g(x)}\) (n lẻ)</td><td>ℝ</td></tr>
+        <tr><td>\(\ln g(x)\)</td><td>g(x) &gt; 0</td></tr>
+        <tr><td>\(1/g(x)\)</td><td>g(x) ≠ 0</td></tr>
+        <tr><td>\(\arcsin g(x)\)</td><td>−1 ≤ g(x) ≤ 1</td></tr>
+        <tr><td>\(\arccos g(x)\)</td><td>−1 ≤ g(x) ≤ 1</td></tr>
+        <tr><td>Giao các điều kiện</td><td>lấy phần chung</td></tr>
+      </table>
+      <div class="ex">
+        <p>Tìm D của f(x)=\(\ln(x-1)+\sqrt{4-x}\)</p>
+        <div class="sol"><p>x−1&gt;0 và 4−x≥0 → <strong>D=(1,4]</strong></p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tr">Quy tắc</span>
+      <h3>Biến Đổi Đồ Thị</h3>
+      <ul>
+        <li>y=f(x)+c : dịch lên c</li>
+        <li>y=f(x+c) : dịch trái c</li>
+        <li>y=−f(x) : lật qua Ox</li>
+        <li>y=f(−x) : lật qua Oy</li>
+        <li>y=cf(x) : giãn dọc hệ số c</li>
+        <li>y=f(cx) : nén ngang hệ số c</li>
+        <li>y=|f(x)| : lật phần dưới Ox lên</li>
+      </ul>
+      <div class="ex">
+        <p>Từ y=x², vẽ y=−(x+2)²+3.</p>
+        <div class="sol"><p>Dịch trái 2, lật qua Ox, dịch lên 3. Đỉnh tại (−2, 3), mở xuống.</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Hàm Hợp &amp; Hàm Nghịch</h3>
+      <div class="fm">\[(f\circ g)(x)=f(g(x))\]</div>
+      <div class="fm">\[f(f^{-1}(x))=x,\quad f^{-1}(f(x))=x\]</div>
+      <p>Đồ thị f⁻¹ là ảnh phản chiếu của f qua y=x.</p>
+      <div class="ex">
+        <p>f(x)=2x+3. Tìm f⁻¹(x) và (f∘f⁻¹)(5).</p>
+        <div class="sol">
+          <p>y=2x+3 → x=(y−3)/2 → <strong>f⁻¹(x)=(x−3)/2</strong></p>
+          <p>(f∘f⁻¹)(5)=f(f⁻¹(5))=f(1)=5. Luôn bằng x.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========== CAL 2 =========== -->
+<div id="c2" class="sec">
+  <div class="ch-hd">
+    <div class="num">Calculus &mdash; Chapter 2</div>
+    <h2>Giới Hạn &amp; Liên Tục</h2>
+    <p>Giá trị hàm tiến đến khi đối số tiến đến một điểm.</p>
+  </div>
+  <div class="obs"><p>Giới hạn như quan sát đích đến của xe đang chạy: hỏi xe sẽ đến đâu, không phải nó đang ở đâu. Đôi khi xe dừng trước đích nhưng ta vẫn biết nó đang hướng về đâu.</p></div>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Giới Hạn Đặc Biệt Quan Trọng</h3>
+      <div class="fm">\[\lim_{x\to0}\frac{\sin x}{x}=1,\quad\lim_{x\to0}\frac{1-\cos x}{x^2}=\frac{1}{2}\]</div>
+      <div class="fm">\[\lim_{x\to\infty}\!\left(1+\frac{1}{x}\right)^{\!x}=e,\quad\lim_{x\to0}\frac{e^x-1}{x}=1\]</div>
+      <div class="fm">\[\lim_{x\to0}\frac{\ln(1+x)}{x}=1,\quad\lim_{x\to0}\frac{(1+x)^\alpha-1}{x}=\alpha\]</div>
+      <div class="ex">
+        <p>Tính \(\lim_{x\to0}\dfrac{\tan 3x}{\sin 5x}\)</p>
+        <div class="sol">
+          <div class="fm">\[=\lim_{x\to0}\frac{\tan3x}{3x}\cdot\frac{5x}{\sin5x}\cdot\frac{3}{5}=1\cdot1\cdot\frac{3}{5}=\frac{3}{5}\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tr">Quy tắc</span>
+      <h3>Luật Giới Hạn</h3>
+      <p>Nếu lim f=L, lim g=M thì:</p>
+      <div class="fm">\[\lim(f\pm g)=L\pm M\]</div>
+      <div class="fm">\[\lim(f\cdot g)=L\cdot M,\quad\lim\frac{f}{g}=\frac{L}{M}\;(M\neq0)\]</div>
+      <div class="ex">
+        <p>Tính \(\lim_{x\to1}\dfrac{x^2-1}{x-1}\)</p>
+        <div class="sol">
+          <div class="fm">\[=\lim_{x\to1}\frac{(x-1)(x+1)}{x-1}=\lim_{x\to1}(x+1)=2\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tt">Định lý</span>
+      <h3>Quy Tắc L'Hôpital</h3>
+      <p>Dạng vô định 0/0 hoặc ∞/∞:</p>
+      <div class="fm">\[\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}\]</div>
+      <div class="ex">
+        <p>a) \(\lim_{x\to0}\dfrac{\sin x}{x}\) &nbsp;&nbsp; b) \(\lim_{x\to\infty}\dfrac{e^x}{x^2}\)</p>
+        <div class="sol">
+          <p>a) 0/0 → L'H: \(\frac{\cos x}{1}=1\)</p>
+          <p>b) ∞/∞ → L'H 2 lần: \(\frac{e^x}{2x}\to\frac{e^x}{2}\to\infty\)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Tiệm Cận (Asymptotes)</h3>
+      <ul>
+        <li><strong>Đứng x=a:</strong> \(\lim_{x\to a}f=\pm\infty\)</li>
+        <li><strong>Ngang y=L:</strong> \(\lim_{x\to\pm\infty}f=L\)</li>
+        <li><strong>Xiên y=kx+b:</strong> \(k=\lim_{x\to\infty}\frac{f}{x}\), \(b=\lim_{x\to\infty}(f-kx)\)</li>
+      </ul>
+      <div class="ex">
+        <p>Tìm tiệm cận của f(x)=\(\dfrac{5x^2-2}{x^2}\)</p>
+        <div class="sol">
+          <p>Tiệm cận đứng: x=0 (mẫu=0)</p>
+          <p>Tiệm cận ngang: \(\lim_{x\to\pm\infty}(5-2/x^2)=5\) → <strong>y=5</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Hàm Liên Tục</h3>
+      <p>f liên tục tại x=a khi:</p>
+      <div class="fm">\[\lim_{x\to a}f(x)=f(a)\]</div>
+      <p>3 điều kiện: (1) f(a) xác định; (2) giới hạn tồn tại; (3) giới hạn = f(a).</p>
+      <div class="ex">
+        <p>f(x)=\(\dfrac{x^2-4}{x-2}\) có liên tục tại x=2 không?</p>
+        <div class="sol"><p>f(2) không xác định (0/0) → <strong>gián đoạn tại x=2</strong>. Nhưng có thể mở rộng: f(2)=4.</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tt">Định lý</span>
+      <h3>Định Lý Giá Trị Trung Gian (IVT)</h3>
+      <p>f liên tục trên [a,b], f(a)·f(b)&lt;0 → ∃c∈(a,b): f(c)=0.</p>
+      <div class="ex">
+        <p>Chứng minh x⁵−2x³−2=0 có nghiệm trong [0,2].</p>
+        <div class="sol">
+          <p>f(0)=−2&lt;0; f(2)=32−16−2=14&gt;0. f liên tục trên [0,2].</p>
+          <p>Theo IVT: <strong>tồn tại c∈(0,2) sao cho f(c)=0.</strong></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========== CAL 3 =========== -->
+<div id="c3" class="sec">
+  <div class="ch-hd">
+    <div class="num">Calculus &mdash; Chapter 3</div>
+    <h2>Đạo Hàm (Derivative)</h2>
+    <p>Tốc độ thay đổi tức thời của hàm số tại một điểm — độ dốc của tiếp tuyến.</p>
+  </div>
+  <div class="obs"><p>Đạo hàm như đồng hồ tốc độ xe: không cho biết xe đã đi bao xa, mà cho biết tại khoảnh khắc đó xe đang di chuyển nhanh hay chậm bao nhiêu.</p></div>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Định Nghĩa Đạo Hàm</h3>
+      <div class="fm">\[f'(x)=\lim_{h\to0}\frac{f(x+h)-f(x)}{h}\]</div>
+      <p>Ký hiệu: f'(x), y', dy/dx, Df(x)</p>
+      <div class="ex">
+        <p>Chứng minh (sin x)'=cos x bằng định nghĩa.</p>
+        <div class="sol">
+          <div class="fm">\[\lim_{h\to0}\frac{\sin(x+h)-\sin x}{h}=\lim_{h\to0}\frac{2\cos(x+h/2)\sin(h/2)}{h}\]</div>
+          <div class="fm">\[=\cos x\cdot\lim_{h\to0}\frac{\sin(h/2)}{h/2}=\cos x\cdot1=\cos x\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Bảng Đạo Hàm Cơ Bản</h3>
+      <table class="tbl">
+        <tr><th>f(x)</th><th>f'(x)</th></tr>
+        <tr><td>\(x^n\)</td><td>\(nx^{n-1}\)</td></tr>
+        <tr><td>\(e^x\)</td><td>\(e^x\)</td></tr>
+        <tr><td>\(a^x\)</td><td>\(a^x\ln a\)</td></tr>
+        <tr><td>\(\ln x\)</td><td>\(1/x\)</td></tr>
+        <tr><td>\(\log_a x\)</td><td>\(1/(x\ln a)\)</td></tr>
+        <tr><td>\(\sin x\)</td><td>\(\cos x\)</td></tr>
+        <tr><td>\(\cos x\)</td><td>\(-\sin x\)</td></tr>
+        <tr><td>\(\tan x\)</td><td>\(1/\cos^2 x=\sec^2 x\)</td></tr>
+        <tr><td>\(\cot x\)</td><td>\(-1/\sin^2 x\)</td></tr>
+        <tr><td>\(\arcsin x\)</td><td>\(1/\sqrt{1-x^2}\)</td></tr>
+        <tr><td>\(\arccos x\)</td><td>\(-1/\sqrt{1-x^2}\)</td></tr>
+        <tr><td>\(\arctan x\)</td><td>\(1/(1+x^2)\)</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <span class="tag tr">Quy tắc</span>
+      <h3>Quy Tắc Vi Phân</h3>
+      <div class="fm">\[(u\pm v)'=u'\pm v'\]</div>
+      <div class="fm">\[(uv)'=u'v+uv'\]</div>
+      <div class="fm">\[\left(\frac{u}{v}\right)'=\frac{u'v-uv'}{v^2}\]</div>
+      <div class="ex">
+        <p>Tính (x²·sin x)'</p>
+        <div class="sol">
+          <div class="fm">\[(x^2\sin x)'=2x\sin x+x^2\cos x\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tr">Quy tắc</span>
+      <h3>Quy Tắc Dây Chuyền (Chain Rule)</h3>
+      <div class="fm">\[[f(g(x))]'=f'(g(x))\cdot g'(x)\]</div>
+      <p>Đạo hàm hàm ngoài × đạo hàm hàm trong.</p>
+      <div class="ex">
+        <p>Tính: a) (sin(3x²))' &nbsp; b) (e^{√x})'</p>
+        <div class="sol">
+          <p>a) cos(3x²)·6x = <strong>6x cos(3x²)</strong></p>
+          <p>b) e^{√x}·\(\frac{1}{2\sqrt{x}}\) = <strong>\(\dfrac{e^{\sqrt{x}}}{2\sqrt{x}}\)</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Đạo Hàm Hàm Ẩn</h3>
+      <p>Bước 1: Đạo hàm hai vế theo x, coi y là hàm của x (dùng chain rule). Bước 2: Giải ra y'.</p>
+      <div class="ex">
+        <p>y=f(x) thỏa x²y+2y³=3x+2y. Tìm y'.</p>
+        <div class="sol">
+          <div class="fm">\[2xy+x^2y'+6y^2y'=3+2y'\]</div>
+          <div class="fm">\[y'(x^2+6y^2-2)=3-2xy\Rightarrow y'=\frac{3-2xy}{x^2+6y^2-2}\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Đạo Hàm Logarithm</h3>
+      <p>Lấy ln cả 2 vế rồi đạo hàm. Dùng cho y=u<sup>v</sup>.</p>
+      <div class="fm">\[\ln y=v\ln u\Rightarrow\frac{y'}{y}=v'\ln u+v\frac{u'}{u}\]</div>
+      <div class="ex">
+        <p>Tính y' với y=x<sup>sin x</sup>.</p>
+        <div class="sol">
+          <p>ln y = sin x · ln x</p>
+          <div class="fm">\[\frac{y'}{y}=\cos x\ln x+\frac{\sin x}{x}\]</div>
+          <div class="fm">\[y'=x^{\sin x}\!\left(\cos x\ln x+\frac{\sin x}{x}\right)\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Đạo Hàm Cấp Cao</h3>
+      <div class="fm">\[(e^x)^{(n)}=e^x,\quad(\ln x)^{(n)}=\frac{(-1)^{n-1}(n-1)!}{x^n}\]</div>
+      <div class="fm">\[(\sin x)^{(n)}=\sin\!\left(x+\frac{n\pi}{2}\right)\]</div>
+      <div class="fm">\[(x^m)^{(n)}=m(m-1)\cdots(m-n+1)x^{m-n}\]</div>
+      <div class="ex">
+        <p>Tính f⁽¹⁰⁰⁾(x) với f(x)=sin x.</p>
+        <div class="sol"><div class="fm">\[f^{(100)}(x)=\sin\!\left(x+\frac{100\pi}{2}\right)=\sin(x+50\pi)=\sin x\]</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag te">Ứng dụng</span>
+      <h3>Bài Toán Vật Lý (Chuyển Động)</h3>
+      <p>Vị trí s(t): vận tốc v(t)=s'(t), gia tốc a(t)=v'(t)=s''(t).</p>
+      <div class="ex">
+        <p>s(t)=2t³+3t²−36t+40. Tìm v(t), a(t), và tổng quãng đường 0≤t≤3.</p>
+        <div class="sol">
+          <p>v(t)=6t²+6t−36=6(t²+t−6)=6(t+3)(t−2)</p>
+          <p>v=0 tại t=2. a(t)=12t+6.</p>
+          <p>s(0)=40, s(2)=0, s(3)=13. Tổng quãng đường = |40−0|+|13−0| = <strong>53</strong></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========== CAL 4 =========== -->
+<div id="c4" class="sec">
+  <div class="ch-hd">
+    <div class="num">Calculus &mdash; Chapter 4</div>
+    <h2>Ứng Dụng Đạo Hàm</h2>
+    <p>Phân tích hình dạng đồ thị, cực trị, tối ưu hóa, xấp xỉ.</p>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="tag tt">Định lý</span>
+      <h3>Định Lý Rolle &amp; Giá Trị Trung Bình</h3>
+      <div class="fm">\[\exists\,c\in(a,b):\;f'(c)=\frac{f(b)-f(a)}{b-a}\]</div>
+      <p>Rolle: f(a)=f(b) → ∃c: f'(c)=0.</p>
+      <div class="ex">
+        <p>f(0)=−3, f'(x)≤5 với 0≤x≤2. f(2) lớn nhất bằng bao nhiêu?</p>
+        <div class="sol">
+          <p>MVT: f(2)−f(0)=f'(c)·2 → f(2)=−3+2f'(c)≤−3+10=<strong>7</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tr">Quy tắc</span>
+      <h3>Cực Trị Địa Phương &amp; Toàn Cục</h3>
+      <ol>
+        <li>Tìm điểm tới hạn: f'(c)=0 hoặc f' không tồn tại</li>
+        <li><strong>Dùng dấu f':</strong> +→− : cực đại; −→+ : cực tiểu</li>
+        <li><strong>Dùng f'':</strong> f''(c)&lt;0 : cực đại; f''(c)&gt;0 : cực tiểu</li>
+        <li>Cực trị tuyệt đối trên [a,b]: so sánh f tại điểm tới hạn và hai đầu</li>
+      </ol>
+      <div class="ex">
+        <p>f(x)=x³−3x²+1 trên [−1/2, 4]. Tìm cực trị tuyệt đối.</p>
+        <div class="sol">
+          <p>f'(x)=3x(x−2)=0 → x=0, x=2.</p>
+          <p>f(−1/2)=1/8, f(0)=1, f(2)=−3, f(4)=17.</p>
+          <p>Max = <strong>17</strong> tại x=4; Min = <strong>−3</strong> tại x=2.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Lõm/Lồi &amp; Điểm Uốn</h3>
+      <ul>
+        <li>f''&gt;0 trên (a,b): lõm lên (concave up)</li>
+        <li>f''&lt;0 trên (a,b): lồi xuống (concave down)</li>
+        <li>Điểm uốn: f'' đổi dấu</li>
+      </ul>
+      <div class="ex">
+        <p>f(x)=3+sin x. Tìm điểm uốn.</p>
+        <div class="sol">
+          <p>f''(x)=−sin x=0 → x=nπ. Kiểm tra đổi dấu:</p>
+          <p>Điểm uốn tại x=nπ (n∈ℤ), toạ độ (nπ, 3).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag te">Ứng dụng</span>
+      <h3>Bài Toán Tối Ưu Hóa</h3>
+      <ol>
+        <li>Đặt ẩn, viết hàm mục tiêu f(x)</li>
+        <li>Tìm điều kiện ràng buộc</li>
+        <li>Dùng ràng buộc rút gọn về hàm 1 biến</li>
+        <li>Tìm cực trị của f</li>
+      </ol>
+      <div class="ex">
+        <p>Rào hình chữ nhật 500m, một cạnh kề tường. Kích thước có diện tích lớn nhất?</p>
+        <div class="sol">
+          <p>Gọi chiều rộng x, chiều dài y. Ràng buộc: 2x+y=500 → y=500−2x.</p>
+          <p>S=xy=x(500−2x). S'=500−4x=0 → x=125, y=250.</p>
+          <p>S<sub>max</sub>=125×250=<strong>31250 m²</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Phương Pháp Newton</h3>
+      <div class="fm">\[x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}\]</div>
+      <div class="ex">
+        <p>Tìm xấp xỉ nghiệm x³−2x−5=0, bắt đầu x₁=2.</p>
+        <div class="sol">
+          <p>f(x)=x³−2x−5, f'(x)=3x²−2</p>
+          <div class="fm">\[x_2=2-\frac{-1}{10}=2.1\]</div>
+          <div class="fm">\[x_3=2.1-\frac{0.061}{11.23}\approx2.0946\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Nguyên Hàm (Antiderivative)</h3>
+      <p>F(x) là nguyên hàm của f(x) khi F'(x)=f(x).</p>
+      <div class="ex">
+        <p>a) Tìm f nếu f'(x)=x√x và f(1)=2.</p>
+        <div class="sol">
+          <p>f'(x)=x^{3/2} → f(x)=\(\frac{2}{5}x^{5/2}+C\). f(1)=2/5+C=2 → C=8/5.</p>
+          <div class="fm">\[f(x)=\frac{2x^{5/2}+8}{5}\]</div>
+        </div>
+      </div>
+      <div class="ex">
+        <p>b) a(t)=6t+4, v(0)=−6, s(0)=9. Tìm s(t).</p>
+        <div class="sol">
+          <p>v(t)=3t²+4t−6; s(t)=<strong>t³+2t²−6t+9</strong></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========== CAL 5 =========== -->
+<div id="c5" class="sec">
+  <div class="ch-hd">
+    <div class="num">Calculus &mdash; Chapter 5 &amp; 6</div>
+    <h2>Tích Phân &amp; Kỹ Thuật Tính</h2>
+    <p>Diện tích, tổng tích lũy và nghịch đảo của vi phân.</p>
+  </div>
+  <div class="obs"><p>Tích phân xác định như cộng dồn vô số lát mỏng: đổ nước vào bình theo từng lớp vô cùng mỏng, tổng thể tích chính là tích phân của tiết diện theo chiều cao.</p></div>
+
+  <div class="grid">
+
+    <div class="card">
+      <span class="tag tt">Định lý</span>
+      <h3>Định Lý Cơ Bản Giải Tích (FTC)</h3>
+      <div class="fm">\[\int_a^b f(x)\,dx=F(b)-F(a)\quad(F'=f)\]</div>
+      <div class="fm">\[\frac{d}{dx}\int_a^x f(t)\,dt=f(x)\]</div>
+      <div class="ex">
+        <p>a) Tính \(\int_1^5(x+1)dx\) &nbsp; b) Tìm g'(x) nếu g(x)=\(\int_1^x\frac{1}{t^3+1}dt\)</p>
+        <div class="sol">
+          <p>a) F(x)=\(\frac{x^2}{2}+x\). F(5)−F(1)=\(\frac{25}{2}+5-\frac{1}{2}-1=17\). Giá trị TB=17/4=<strong>7/2</strong></p>
+          <p>b) Theo FTC-2: g'(x)=<strong>\(\frac{1}{x^3+1}\)</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Tính Chất Tích Phân Xác Định</h3>
+      <div class="fm">\[\int_a^b(f\pm g)dx=\int_a^bfdx\pm\int_a^bgdx\]</div>
+      <div class="fm">\[\int_a^bfdx=\int_a^cfdx+\int_c^bfdx\]</div>
+      <div class="fm">\[\int_a^bfdx=-\int_b^afdx,\quad\int_a^afdx=0\]</div>
+      <p><strong>Giá trị trung bình:</strong> \(\bar{f}=\frac{1}{b-a}\int_a^bf\,dx\)</p>
+      <div class="ex">
+        <p>Giá trị TB của f(x)=x+1 trên [0,5].</p>
+        <div class="sol"><div class="fm">\[\bar{f}=\frac{1}{5}\int_0^5(x+1)dx=\frac{1}{5}\cdot\frac{35}{2}=\frac{7}{2}\]</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tr">Kỹ thuật</span>
+      <h3>Đặt Biến Phụ (Substitution)</h3>
+      <p>Đặt u=g(x), du=g'(x)dx:</p>
+      <div class="fm">\[\int f(g(x))g'(x)\,dx=\int f(u)\,du\]</div>
+      <p>Tích phân xác định: đổi cận → u(a) và u(b).</p>
+      <div class="ex">
+        <p>a) \(\int x\cos(x^2)dx\) &nbsp;&nbsp; b) \(\int_0^1 2x\sqrt{1+x^2}\,dx\)</p>
+        <div class="sol">
+          <p>a) u=x² → du=2x dx: \(\frac{1}{2}\int\cos u\,du=\frac{1}{2}\sin(x^2)+C\)</p>
+          <p>b) u=1+x², khi x=0: u=1; x=1: u=2.</p>
+          <div class="fm">\[\int_1^2\sqrt{u}\,du=\left[\frac{2}{3}u^{3/2}\right]_1^2=\frac{2}{3}(2\sqrt{2}-1)\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tr">Kỹ thuật</span>
+      <h3>Tích Phân Từng Phần (IBP)</h3>
+      <div class="fm">\[\int u\,dv=uv-\int v\,du\]</div>
+      <p>Chọn u theo <strong>LIATE</strong>: Log, Inverse trig, Algebraic, Trig, Exp.</p>
+      <div class="ex">
+        <p>a) \(\int x e^x dx\) &nbsp;&nbsp; b) \(\int x\sin x\,dx\)</p>
+        <div class="sol">
+          <p>a) u=x, dv=e^x dx → v=e^x: \(xe^x-\int e^xdx=\mathbf{xe^x-e^x+C}\)</p>
+          <p>b) u=x, dv=sin x dx → v=−cos x: \(-x\cos x+\int\cos x\,dx=\mathbf{-x\cos x+\sin x+C}\)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tr">Kỹ thuật</span>
+      <h3>Phân Tích Phân Thức Riêng</h3>
+      <p>Phân tích Q(x) thành nhân tử, sau đó:</p>
+      <div class="fm">\[\frac{P(x)}{(x-a)(x-b)}=\frac{A}{x-a}+\frac{B}{x-b}\]</div>
+      <div class="fm">\[\frac{P}{(x-a)^2}=\frac{A_1}{x-a}+\frac{A_2}{(x-a)^2}\]</div>
+      <div class="ex">
+        <p>\(\int\dfrac{dx}{x^2-a^2}\)</p>
+        <div class="sol">
+          <div class="fm">\[\frac{1}{x^2-a^2}=\frac{1}{2a}\left(\frac{1}{x-a}-\frac{1}{x+a}\right)\]</div>
+          <div class="fm">\[\Rightarrow\frac{1}{2a}\ln\left|\frac{x-a}{x+a}\right|+C\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag td">Định nghĩa</span>
+      <h3>Tích Phân Suy Rộng</h3>
+      <div class="fm">\[\int_a^{\infty}f\,dx=\lim_{t\to\infty}\int_a^t f\,dx\]</div>
+      <div class="fm">\[\int_a^b f\,dx=\lim_{t\to a^+}\int_t^b f\,dx\quad(f\text{ bất chặn tại }a)\]</div>
+      <div class="ex">
+        <p>a) \(\int_1^{\infty}\dfrac{1}{x^p}dx\) &nbsp;&nbsp; b) \(\int_0^1\dfrac{1}{\sqrt{x}}dx\)</p>
+        <div class="sol">
+          <p>a) Hội tụ khi <strong>p&gt;1</strong>: giá trị = 1/(p−1).</p>
+          <p>b) \(\lim_{t\to0^+}[2\sqrt{x}]_t^1=2-0=\mathbf{2}\) (hội tụ)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag tf">Công thức</span>
+      <h3>Xấp Xỉ Tích Phân</h3>
+      <p>h=(b−a)/n</p>
+      <div class="fm">\[T_n=\frac{h}{2}\big[f(x_0)+2f(x_1)+\cdots+2f(x_{n-1})+f(x_n)\big]\]</div>
+      <p><strong>Hình thang</strong> — sai số O(h²)</p>
+      <div class="fm">\[S_n=\frac{h}{3}\big[f(x_0)+4f(x_1)+2f(x_2)+4f(x_3)+\cdots+f(x_n)\big]\]</div>
+      <p><strong>Simpson</strong> (n chẵn) — sai số O(h⁴)</p>
+      <div class="ex">
+        <p>Xấp xỉ \(\int_0^1 e^{x^2}dx\) bằng T₄ (n=4, h=0.25).</p>
+        <div class="sol">
+          <p>x₀=0, x₁=0.25, x₂=0.5, x₃=0.75, x₄=1</p>
+          <div class="fm">\[T_4\approx\frac{0.25}{2}[1+2(1.0645)+2(1.284)+2(1.755)+2.718]\approx1.467\]</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="tag te">Ứng dụng</span>
+      <h3>Diện Tích Và Ứng Dụng</h3>
+      <div class="fm">\[S=\int_a^b|f(x)-g(x)|\,dx\]</div>
+      <div class="fm">\[\text{FTC-Leibniz: }\left(\int_{u(x)}^{v(x)}f\,dt\right)'=f(v)\cdot v'-f(u)\cdot u'\]</div>
+      <div class="ex">
+        <p>F(x)=\(\int_{\sqrt{x}}^{3x}t^2\sin(1+t^2)dt\). Tìm F'(x).</p>
+        <div class="sol">
+          <div class="fm">\[F'(x)=9x^2\sin(1+9x^2)\cdot3-x\sin(1+x)\cdot\frac{1}{2\sqrt{x}}\]</div>
+          <div class="fm">\[=27x^2\sin(1+9x^2)-\frac{\sqrt{x}}{2}\sin(1+x)\]</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sep">* * *</div>
+
+  <div class="full">
+    <span class="tag tf">Bang Tong Hop</span>
+    <h3>Bảng Tích Phân Bất Định Đầy Đủ</h3>
+    <table class="tbl">
+      <tr><th>f(x)</th><th>\(\int f(x)\,dx\) + C</th></tr>
+      <tr><td>\(x^n\) (n≠−1)</td><td>\(\dfrac{x^{n+1}}{n+1}\)</td></tr>
+      <tr><td>\(\dfrac{1}{x}\)</td><td>\(\ln|x|\)</td></tr>
+      <tr><td>\(e^x\)</td><td>\(e^x\)</td></tr>
+      <tr><td>\(a^x\)</td><td>\(\dfrac{a^x}{\ln a}\)</td></tr>
+      <tr><td>\(\sin x\)</td><td>\(-\cos x\)</td></tr>
+      <tr><td>\(\cos x\)</td><td>\(\sin x\)</td></tr>
+      <tr><td>\(\tan x\)</td><td>\(-\ln|\cos x|\)</td></tr>
+      <tr><td>\(\cot x\)</td><td>\(\ln|\sin x|\)</td></tr>
+      <tr><td>\(\dfrac{1}{\cos^2 x}\)</td><td>\(\tan x\)</td></tr>
+      <tr><td>\(\dfrac{1}{\sin^2 x}\)</td><td>\(-\cot x\)</td></tr>
+      <tr><td>\(\dfrac{1}{\sqrt{1-x^2}}\)</td><td>\(\arcsin x\)</td></tr>
+      <tr><td>\(\dfrac{-1}{\sqrt{1-x^2}}\)</td><td>\(\arccos x\)</td></tr>
+      <tr><td>\(\dfrac{1}{1+x^2}\)</td><td>\(\arctan x\)</td></tr>
+      <tr><td>\(\dfrac{1}{\sqrt{x^2\pm a^2}}\)</td><td>\(\ln\!\left|x+\sqrt{x^2\pm a^2}\right|\)</td></tr>
+      <tr><td>\(\dfrac{1}{x^2-a^2}\)</td><td>\(\dfrac{1}{2a}\ln\left|\dfrac{x-a}{x+a}\right|\)</td></tr>
+      <tr><td>\(\dfrac{1}{x^2+a^2}\)</td><td>\(\dfrac{1}{a}\arctan\dfrac{x}{a}\)</td></tr>
+      <tr><td>\(\dfrac{1}{\sqrt{a^2-x^2}}\)</td><td>\(\arcsin\dfrac{x}{a}\)</td></tr>
+      <tr><td>\(\sqrt{a^2-x^2}\)</td><td>\(\dfrac{x}{2}\sqrt{a^2-x^2}+\dfrac{a^2}{2}\arcsin\dfrac{x}{a}\)</td></tr>
+      <tr><td>\(e^{ax}\sin bx\)</td><td>\(\dfrac{e^{ax}(a\sin bx-b\cos bx)}{a^2+b^2}\)</td></tr>
+      <tr><td>\(e^{ax}\cos bx\)</td><td>\(\dfrac{e^{ax}(a\cos bx+b\sin bx)}{a^2+b^2}\)</td></tr>
+    </table>
+  </div>
+
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <em>"La pittura e una cosa mentale" &mdash; Hội họa là sản phẩm của trí tuệ, toán học là ngôn ngữ của vũ trụ.</em>
+  <span>MAE101 &bull; Lê Văn Bi &bull; Codex Atlanticus Mathematicus &bull; FPT University</span>
+</footer>
+
+<script>
+function show(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const map={a1:0,a2:1,a3:2,a4:3,c1:4,c2:5,c3:6,c4:7,c5:8};
+  document.querySelectorAll('.nb')[map[id]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
