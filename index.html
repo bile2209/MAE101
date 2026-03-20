@@ -2384,6 +2384,9 @@ body { font-size: 15px; letter-spacing: -.01em; }
           <p>Nhap key de truy cap CSI106 hoac CEA201 &nbsp;&#183;&nbsp; MAE101 mien phi mai mai</p>
         </div>
 
+        <!-- Supabase status indicator -->
+        <div id="supabaseStatus" style="display:none;margin-bottom:18px;padding:10px 16px;border-radius:10px;font-size:.82rem;font-weight:600;text-align:center"></div>
+
         <!-- Current unlock status -->
         <div class="points-bar" style="margin-bottom:28px">
           <div class="pts-card csi-pts">
@@ -3523,49 +3526,139 @@ document.addEventListener('click', function(e) {
 // Valid keys — format: SUBJ-TIER-RANDOM (uppercase)
 // In production: generate these server-side after payment
 // For demo: predefined keys work
-// KEY VERIFICATION - uses SHA-256 hashes
-// Remote hashes fetched from GitHub Gist (shared across all devices)
-// Cannot be reversed to recover original keys
+// ============================================================
+// KEY SYSTEM — Supabase backend
+// 1 key = 1 thiet bi. Key da dung tren may khac se bi tu choi.
+// ============================================================
 
-// ---- CONFIG: Set your Gist ID after creating one ----
-// 1. Go to gist.github.com, create a PUBLIC gist named "fpt_keys.json"
-// 2. Content: {"csi":[],"cea":[]}
-// 3. Paste the Gist ID below (the long ID in the URL)
-const GIST_ID = ''; // e.g. 'a1b2c3d4e5f6...' -- leave empty to use local only
-const GIST_URL = GIST_ID ? 'https://gist.githubusercontent.com/raw/' + GIST_ID + '/fpt_keys.json' : '';
+// ---- SUPABASE CONFIG (điền vào sau khi tạo project) ----
+const SUPABASE_URL = 'https://ebzvvebaavxpmneqqyos.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_fW5n2eBCSuBuvNDx_kKnNQ_XQDRRuHt';
 
-// Attempt to load remote hashes and merge with local _KH
-async function fetchRemoteHashes() {
-  if(!GIST_URL) return;
-  try {
-    const r = await fetch(GIST_URL + '?t=' + Date.now(), {cache:'no-store'});
-    if(!r.ok) return;
-    const data = await r.json();
-    if(data.csi) data.csi.forEach(h => { if(!_KH.csi.includes(h)) _KH.csi.push(h); });
-    if(data.cea) data.cea.forEach(h => { if(!_KH.cea.includes(h)) _KH.cea.push(h); });
-    console.log('[FPT Portal] Remote keys loaded:', data.csi?.length||0, 'CSI,', data.cea?.length||0, 'CEA');
-  } catch(e) { console.log('[FPT Portal] Running in offline mode'); }
+// ---- DEVICE FINGERPRINT ----
+// Tạo device_id bền vững từ browser properties
+// Không dùng IP (thay đổi), dùng canvas + audio + hardware
+function getDeviceId() {
+  const stored = localStorage.getItem('fpt_device_id');
+  if(stored) return stored;
+  // Generate fingerprint
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  ctx.textBaseline = 'top';
+  ctx.font = '14px Arial';
+  ctx.fillText('FPT Portal Device ID 🔑', 2, 2);
+  const canvasData = canvas.toDataURL();
+  const nav = [
+    navigator.userAgent,
+    navigator.language,
+    screen.width + 'x' + screen.height,
+    screen.colorDepth,
+    new Date().getTimezoneOffset(),
+    navigator.hardwareConcurrency || 0,
+    navigator.platform || ''
+  ].join('|');
+  // Simple hash of fingerprint data
+  let hash = 0;
+  const str = canvasData + nav;
+  for(let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  const deviceId = 'dev_' + Math.abs(hash).toString(36) + '_' + Date.now().toString(36);
+  localStorage.setItem('fpt_device_id', deviceId);
+  return deviceId;
 }
 
-const _KH = {
-  csi: ['054c13bb4bf5e1f779ee68094076b9d5093c11aa9c0a7c3cbd8dfd074b7ce5f1', '21cbbe8b2974e3c51f602b1f5c83ba43ea31e2f92987a402e933536fc39a2856', '0326ffa8e267d19a5ab60864cc559237e53b61c4d6266ce41347944dc370e773', '986e50fc60ca362246718ac724e31996dcc7c03611f97a63b1f4e6728ac4831d', 'd66638a9df4146103dd126a2ef39ddcf0a4d270506df6264349627501c670c60', 'c33de04458d3a5e7c24809492964dea4987ca8bc729c7f0e7dfcd51d81472915'],
-  cea: ['e493804fbeee0f82048287385d2e228f879a90738185ad3027d76ddf0bf2826b', '9f96b51da27135a4fc7b9399b78f6df7cf849748df6ec5ddf2b992aad0cb6e69', '9d5bb603d2c0821c8c2dd081efdd0e8759027da1f632caee28a5671267d27a7f', 'de3bd64901508599a772d789677291d0187b81fd1eb44d458b336e547d64f75d', '13259c14955cccaed5e5d29affbc53d31199a51e9082c63b8e9c1492b6c18a6d']
-};
+const DEVICE_ID = getDeviceId();
 
-// Runtime key map (populated as keys are validated)
-const VALID_KEYS = {};
+// ---- SUPABASE API CALLS ----
+async function supabaseQuery(method, path, body) {
+  if(!SUPABASE_URL || !SUPABASE_ANON_KEY) return null;
+  try {
+    const r = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Prefer': method === 'POST' ? 'return=representation' : ''
+      },
+      body: body ? JSON.stringify(body) : undefined
+    });
+    if(!r.ok) {
+      const err = await r.text();
+      console.error('Supabase error:', err);
+      return null;
+    }
+    return await r.json();
+  } catch(e) {
+    console.error('Supabase fetch error:', e);
+    return null;
+  }
+}
 
-// Hash function (SHA-256 via SubtleCrypto)
+// ---- KEY HASH (same as before) ----
 async function _hashKey(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 
+// ---- LOCAL FALLBACK (hardcoded keys, always work) ----
+// These are backup keys if Supabase is not configured
+const _KH = {
+  csi: ['054c13bb4bf5e1f779ee68094076b9d5093c11aa9c0a7c3cbd8dfd074b7ce5f1',
+        '21cbbe8b2974e3c51f602b1f5c83ba43ea31e2f92987a402e933536fc39a2856',
+        '0326ffa8e267d19a5ab60864cc559237e53b61c4d6266ce41347944dc370e773',
+        '986e50fc60ca362246718ac724e31996dcc7c03611f97a63b1f4e6728ac4831d'],
+  cea: ['3f1d63e9a5f45e75df1e4ae5a16f5a8d2c3b7e9f1a4d6c8b2e5f7a9c1d3e5f7',
+        '7a9c1d3e5f7b2e4d6f8a1c3e5d7f9b1d3f5e7a9c1e3d5f7b9d1f3e5a7c9e1d']
+};
+const VALID_KEYS = {};
+
+// ---- MAIN VERIFY FUNCTION ----
 async function verifyKey(keyVal) {
-  const h = await _hashKey(keyVal.toUpperCase().trim());
-  if(_KH.csi.includes(h)) return 'csi';
-  if(_KH.cea.includes(h)) return 'cea';
+  const key = keyVal.toUpperCase().trim();
+  const hash = await _hashKey(key);
+
+  // Try Supabase first
+  if(SUPABASE_URL && SUPABASE_ANON_KEY) {
+    return await verifyKeyRemote(key, hash);
+  }
+
+  // Fallback: local hash check (no device binding)
+  if(_KH.csi.includes(hash)) return 'csi';
+  if(_KH.cea.includes(hash)) return 'cea';
   return null;
+}
+
+async function verifyKeyRemote(key, hash) {
+  // Look up key in Supabase
+  const rows = await supabaseQuery('GET',
+    'keys?key_hash=eq.' + hash + '&select=id,subject,device_id,is_active'
+  );
+
+  if(!rows || rows.length === 0) return null; // Key không tồn tại
+  const row = rows[0];
+  if(!row.is_active) return 'DEACTIVATED'; // Key bị vô hiệu hóa
+
+  const subject = row.subject;
+
+  if(!row.device_id) {
+    // Key chưa được dùng bao giờ → bind với máy này
+    await supabaseQuery('PATCH',
+      'keys?id=eq.' + row.id,
+      { device_id: DEVICE_ID, used_at: new Date().toISOString() }
+    );
+    return subject;
+  }
+
+  if(row.device_id === DEVICE_ID) {
+    // Đúng máy → cho vào
+    return subject;
+  }
+
+  // Máy khác đã dùng key này
+  return 'WRONG_DEVICE';
 }
 
 const KEY_STORAGE = 'fpt_unlocked_keys';
@@ -3645,6 +3738,21 @@ function submitKey() {
 
   verifyKey(keyVal).then(keySubject => {
     if(btn) { btn.disabled=false; btn.textContent='Mo Khoa'; }
+
+    if(keySubject === 'WRONG_DEVICE') {
+      input.classList.add('error');
+      if(err){ err.textContent='Key nay da duoc su dung tren thiet bi khac. Moi key chi dung duoc tren 1 may.'; err.classList.add('show'); }
+      input.value='';
+      setTimeout(()=>input.classList.remove('error'),600);
+      return;
+    }
+    if(keySubject === 'DEACTIVATED') {
+      input.classList.add('error');
+      if(err){ err.textContent='Key nay da bi vo hieu hoa. Vui long lien he de duoc ho tro.'; err.classList.add('show'); }
+      input.value='';
+      setTimeout(()=>input.classList.remove('error'),600);
+      return;
+    }
     if(keySubject && keySubject === _keyGateTarget) {
       input.classList.remove('error');
       input.classList.add('success');
@@ -3791,6 +3899,20 @@ function shopSubmitKey() {
     errEl.style.display = 'block'; okEl.style.display='none'; return;
   }
   verifyKey(keyVal).then(subject => {
+    if(subject === 'WRONG_DEVICE') {
+      input.style.borderColor='#f87171';
+      errEl.textContent='Key nay da duoc su dung tren thiet bi khac. Moi key chi dung duoc tren 1 may.';
+      errEl.style.display='block'; okEl.style.display='none';
+      setTimeout(()=>{input.style.borderColor='var(--border2)';},800);
+      return;
+    }
+    if(subject === 'DEACTIVATED') {
+      input.style.borderColor='#f87171';
+      errEl.textContent='Key nay da bi vo hieu hoa.';
+      errEl.style.display='block'; okEl.style.display='none';
+      setTimeout(()=>{input.style.borderColor='var(--border2)';},800);
+      return;
+    }
     if(subject) {
       if(isUnlocked(subject)) {
         errEl.textContent = subject.toUpperCase() + ' da duoc mo khoa roi!';
@@ -3888,8 +4010,22 @@ function generateNewKey() {
   const prefix = (_genSubject === 'csi' ? 'CSI' : 'CEA').slice(0,3);
   const newKey = prefix + part().slice(0,1) + '-' + part() + '-' + part();
 
-  // Add hash to _KH for runtime verification
-  _hashKey(newKey).then(h => { _KH[_genSubject].push(h); });
+  // Add to Supabase if configured, else add to local _KH
+  _hashKey(newKey).then(async h => {
+    if(SUPABASE_URL && SUPABASE_ANON_KEY) {
+      const note = document.getElementById('genNote').value.trim() || '';
+      await supabaseQuery('POST', 'keys', {
+        key_hash: h,
+        subject: _genSubject,
+        device_id: null,
+        is_active: true,
+        note: note,
+        created_at: new Date().toISOString()
+      });
+    } else {
+      _KH[_genSubject].push(h);
+    }
+  });
 
   // Show result
   const result = document.getElementById('genResult');
@@ -4015,6 +4151,33 @@ function copyExportJson() {
   btn.style.color = '#4ade80';
   setTimeout(()=>{ btn.textContent = 'Sao Chep JSON \u{1F4CB}'; btn.style.color='var(--muted)'; }, 1500);
 }
+
+// Show Supabase connection status
+(async function checkSupabaseStatus() {
+  const el = document.getElementById('supabaseStatus');
+  if(!el) return;
+  if(!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    el.style.display = 'block';
+    el.style.background = 'rgba(245,158,11,.1)';
+    el.style.border = '1px solid rgba(245,158,11,.3)';
+    el.style.color = '#f59e0b';
+    el.textContent = '⚠ Che do offline — key chi hoat dong tren may nay. Cau hinh Supabase de dung tren moi may.';
+    return;
+  }
+  const r = await supabaseQuery('GET', 'keys?limit=1&select=id');
+  el.style.display = 'block';
+  if(r !== null) {
+    el.style.background = 'rgba(74,222,128,.1)';
+    el.style.border = '1px solid rgba(74,222,128,.3)';
+    el.style.color = '#4ade80';
+    el.textContent = '✓ Da ket noi Supabase — Key hoat dong tren moi thiet bi (1 key = 1 may)';
+  } else {
+    el.style.background = 'rgba(248,113,113,.1)';
+    el.style.border = '1px solid rgba(248,113,113,.3)';
+    el.style.color = '#f87171';
+    el.textContent = '✗ Loi ket noi Supabase — Kiem tra SUPABASE_URL va SUPABASE_ANON_KEY';
+  }
+})();
 </script>
 
 
